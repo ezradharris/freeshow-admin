@@ -2,6 +2,10 @@ import { useRef, useState } from "react"
 import { createFileRoute } from "@tanstack/react-router"
 import { useVirtualizer } from "@tanstack/react-virtual"
 import { Button } from "@/components/ui/button"
+import { db } from "@/database/db"
+import { songs, shows, contentHistory } from "@/database/schema"
+import { users } from "@/../auth-schema"
+import { desc, eq } from "drizzle-orm"
 
 type HistoryEntry = {
     id: string
@@ -9,14 +13,48 @@ type HistoryEntry = {
     contentId: string
     contentName: string
     changedByName: string | null
-    changedAt: string
+    changedAt: Date
 }
 
 export const Route = createFileRoute("/history")({
     loader: async () => {
-        const res = await fetch("/api/history?limit=200")
-        const data = await res.json()
-        return { entries: Array.isArray(data) ? (data as HistoryEntry[]) : [] }
+        const [songHistory, showHistory] = await Promise.all([
+            db.select({
+                id: contentHistory.id,
+                contentType: contentHistory.contentType,
+                contentId: contentHistory.contentId,
+                contentName: songs.title,
+                changedByName: users.name,
+                changedAt: contentHistory.changedAt,
+            })
+            .from(contentHistory)
+            .innerJoin(songs, eq(contentHistory.contentId, songs.id))
+            .innerJoin(users, eq(contentHistory.changedBy, users.id))
+            .where(eq(contentHistory.contentType, "song"))
+            .orderBy(desc(contentHistory.changedAt))
+            .limit(200),
+
+            db.select({
+                id: contentHistory.id,
+                contentType: contentHistory.contentType,
+                contentId: contentHistory.contentId,
+                contentName: shows.name,
+                changedByName: users.name,
+                changedAt: contentHistory.changedAt,
+            })
+            .from(contentHistory)
+            .innerJoin(shows, eq(contentHistory.contentId, shows.id))
+            .innerJoin(users, eq(contentHistory.changedBy, users.id))
+            .where(eq(contentHistory.contentType, "show"))
+            .orderBy(desc(contentHistory.changedAt))
+            .limit(200),
+        ])
+
+        const merged = [...songHistory, ...showHistory]
+            .sort((a, b) => new Date(b.changedAt).getTime() - new Date(a.changedAt).getTime())
+            .slice(0, 200)
+
+        return { entries: merged as HistoryEntry[] }
     },
     component: HistoryPage,
 })

@@ -3,21 +3,23 @@ import { createFileRoute, Link } from "@tanstack/react-router"
 import { Button } from "@/components/ui/button"
 import { MonacoEditor } from "@/components/monaco-editor"
 import { ShowHistorySidebar } from "@/components/show-history-sidebar"
+import { db } from "@/database/db"
+import { shows } from "@/database/schema"
+import { eq } from "drizzle-orm"
 
 type ProjectRecord = {
     id: string
     name: string
     type: string
     rawJson: unknown
-    updatedAt: string
+    updatedAt: Date
 }
 
 export const Route = createFileRoute("/projects/$id")({
     loader: async ({ params }) => {
-        const res = await fetch(`/api/shows/${params.id}`)
-        if (!res.ok) throw new Error("Project not found")
-        const project = await res.json() as ProjectRecord
-        return { project }
+        const projectRows = await db.select().from(shows).where(eq(shows.id, params.id)).limit(1)
+        if (!projectRows.length) throw new Error("Project not found")
+        return { project: projectRows[0] as ProjectRecord }
     },
     component: ProjectEditorPage,
 })

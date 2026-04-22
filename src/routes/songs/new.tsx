@@ -4,12 +4,14 @@ import { Button } from "@/components/ui/button"
 import { MetadataPanel } from "@/components/song-editor/metadata-panel"
 import { SectionList } from "@/components/song-editor/section-list"
 import type { SongSection, Settings } from "@/components/song-editor/section-item"
+import { db } from "@/database/db"
+import { settings as settingsTable } from "@/database/schema"
 
 export const Route = createFileRoute("/songs/new")({
     loader: async () => {
-        const res = await fetch("/api/settings")
-        const settings = await res.json() as Settings
-        return { settings }
+        const allSettings = await db.select().from(settingsTable)
+        const settingsMap = Object.fromEntries(allSettings.map(s => [s.key, s.value]))
+        return { settings: settingsMap as Settings }
     },
     component: NewSongPage,
 })

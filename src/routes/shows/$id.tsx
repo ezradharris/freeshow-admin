@@ -3,21 +3,23 @@ import { createFileRoute, Link } from "@tanstack/react-router"
 import { Button } from "@/components/ui/button"
 import { MonacoEditor } from "@/components/monaco-editor"
 import { ShowHistorySidebar } from "@/components/show-history-sidebar"
+import { db } from "@/database/db"
+import { shows } from "@/database/schema"
+import { eq } from "drizzle-orm"
 
 type ShowRecord = {
     id: string
     name: string
     type: string
     rawJson: unknown
-    updatedAt: string
+    updatedAt: Date
 }
 
 export const Route = createFileRoute("/shows/$id")({
     loader: async ({ params }) => {
-        const res = await fetch(`/api/shows/${params.id}`)
-        if (!res.ok) throw new Error("Show not found")
-        const show = await res.json() as ShowRecord
-        return { show }
+        const showRows = await db.select().from(shows).where(eq(shows.id, params.id)).limit(1)
+        if (!showRows.length) throw new Error("Show not found")
+        return { show: showRows[0] as ShowRecord }
     },
     component: ShowEditorPage,
 })

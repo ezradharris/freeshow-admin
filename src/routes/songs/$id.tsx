@@ -6,6 +6,9 @@ import { SectionList } from "@/components/song-editor/section-list"
 import { HistorySidebar } from "@/components/song-editor/history-sidebar"
 import { SharePanel } from "@/components/song-editor/share-panel"
 import type { SongSection, Settings } from "@/components/song-editor/section-item"
+import { db } from "@/database/db"
+import { songs, songSections, settings as settingsTable } from "@/database/schema"
+import { eq, asc } from "drizzle-orm"
 
 type SongData = {
     id: string
@@ -18,13 +21,14 @@ type SongData = {
 
 export const Route = createFileRoute("/songs/$id")({
     loader: async ({ params }) => {
-        const [songRes, settingsRes] = await Promise.all([
-            fetch(`/api/songs/${params.id}`),
-            fetch("/api/settings"),
+        const [songRows, sectionRows, allSettings] = await Promise.all([
+            db.select().from(songs).where(eq(songs.id, params.id)).limit(1),
+            db.select().from(songSections).where(eq(songSections.songId, params.id)).orderBy(asc(songSections.sortOrder)),
+            db.select().from(settingsTable),
         ])
-        const song = await songRes.json() as SongData
-        const settings = await settingsRes.json() as Settings
-        return { song, settings }
+        if (!songRows.length) throw new Error("Song not found")
+        const settingsMap = Object.fromEntries(allSettings.map(s => [s.key, s.value]))
+        return { song: { ...songRows[0], sections: sectionRows } as SongData, settings: settingsMap as Settings }
     },
     component: SongEditorPage,
 })

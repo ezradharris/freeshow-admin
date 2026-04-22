@@ -1,6 +1,9 @@
 import { useState } from "react"
 import { createFileRoute } from "@tanstack/react-router"
 import { Button } from "@/components/ui/button"
+import { db } from "@/database/db"
+import { songs as songsTable, shows as showsTable } from "@/database/schema"
+import { asc } from "drizzle-orm"
 
 type Song = {
     id: string
@@ -15,16 +18,14 @@ type ShowItem = {
 
 export const Route = createFileRoute("/export")({
     loader: async () => {
-        const [songsRes, showsRes] = await Promise.all([
-            fetch("/api/songs/"),
-            fetch("/api/shows/"),
+        const [allSongs, allShows] = await Promise.all([
+            db.select({ id: songsTable.id, title: songsTable.title }).from(songsTable).orderBy(asc(songsTable.title)),
+            db.select({ id: showsTable.id, name: showsTable.name, type: showsTable.type }).from(showsTable).orderBy(asc(showsTable.name)),
         ])
-        const songs = (await songsRes.json()) as Song[]
-        const allShows = (await showsRes.json()) as ShowItem[]
         return {
-            songs: Array.isArray(songs) ? songs : [],
-            shows: Array.isArray(allShows) ? allShows.filter(s => s.type === "show") : [],
-            projects: Array.isArray(allShows) ? allShows.filter(s => s.type === "project") : [],
+            songs: allSongs as Song[],
+            shows: allShows.filter(s => s.type === "show") as ShowItem[],
+            projects: allShows.filter(s => s.type === "project") as ShowItem[],
         }
     },
     component: ExportPage,

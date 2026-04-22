@@ -1,16 +1,23 @@
 import { createFileRoute } from "@tanstack/react-router"
+import { db } from "@/database/db"
+import { songs, songSections, songShares } from "@/database/schema"
+import { eq, asc } from "drizzle-orm"
 
 type SongSection = { type: string; label: string; content: string; sortOrder: number }
 type SongData = { id: string; title: string; author: string | null; copyright: string | null; ccliNumber: string | null; sections: SongSection[] }
 
 export const Route = createFileRoute("/s/$token")({
     loader: async ({ params }) => {
-        const res = await fetch(`/api/public/songs/${params.token}`)
-        if (res.status === 403) return { error: "expired" as const, song: null }
-        if (res.status === 404) return { error: "notfound" as const, song: null }
-        if (!res.ok) return { error: "error" as const, song: null }
-        const song = await res.json() as SongData
-        return { song, error: null }
+        const shareRows = await db.select().from(songShares).where(eq(songShares.token, params.token)).limit(1)
+        if (!shareRows.length) return { song: null, error: "notfound" as const }
+        const share = shareRows[0]
+        if (share.expiresAt && share.expiresAt < new Date()) return { song: null, error: "expired" as const }
+        const [songRows, sectionRows] = await Promise.all([
+            db.select().from(songs).where(eq(songs.id, share.songId)).limit(1),
+            db.select().from(songSections).where(eq(songSections.songId, share.songId)).orderBy(asc(songSections.sortOrder)),
+        ])
+        if (!songRows.length) return { song: null, error: "notfound" as const }
+        return { song: { ...songRows[0], sections: sectionRows } as SongData, error: null }
     },
     component: PublicSongPage,
 })

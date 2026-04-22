@@ -1,29 +1,35 @@
 import { createFileRoute, Link } from "@tanstack/react-router"
 import { Music, MonitorPlay, FolderOpen, Upload, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { db } from "@/database/db"
+import { songs, shows, contentHistory } from "@/database/schema"
+import { users } from "@/../auth-schema"
+import { desc, eq } from "drizzle-orm"
 
 export const Route = createFileRoute("/")({
     loader: async () => {
-        const [songsRes, showsRes, historyRes] = await Promise.all([
-            fetch("/api/songs/"),
-            fetch("/api/shows/"),
-            fetch("/api/history?limit=10"),
+        const [allSongs, allShows, historyEntries] = await Promise.all([
+            db.select({ id: songs.id, title: songs.title, author: songs.author, ccliNumber: songs.ccliNumber, createdAt: songs.createdAt, updatedAt: songs.updatedAt })
+                .from(songs).orderBy(desc(songs.updatedAt)),
+            db.select({ id: shows.id, name: shows.name, type: shows.type, createdAt: shows.createdAt, updatedAt: shows.updatedAt })
+                .from(shows).orderBy(desc(shows.updatedAt)),
+            db.select({
+                id: contentHistory.id,
+                contentType: contentHistory.contentType,
+                contentId: contentHistory.contentId,
+                changedByName: users.name,
+                changedAt: contentHistory.changedAt,
+            })
+            .from(contentHistory)
+            .innerJoin(users, eq(contentHistory.changedBy, users.id))
+            .orderBy(desc(contentHistory.changedAt))
+            .limit(10),
         ])
-        const songsData = await songsRes.json()
-        const showsData = await showsRes.json()
-        const historyData = await historyRes.json()
-        const songs = Array.isArray(songsData) ? (songsData as Array<{ id: string; title: string }>) : []
-        const shows = Array.isArray(showsData) ? (showsData as Array<{ id: string; name: string; type: string }>) : []
-        const history = Array.isArray(historyData)
-            ? (historyData as Array<{
-                  id: string
-                  contentType: string
-                  contentName: string
-                  changedByName: string
-                  changedAt: string
-              }>)
-            : []
-        return { songs, shows, history }
+        return {
+            songs: allSongs,
+            shows: allShows,
+            history: historyEntries,
+        }
     },
     component: IndexPage,
 })
@@ -54,6 +60,9 @@ function IndexPage() {
     const { songs, shows, history } = Route.useLoaderData()
     const projects = shows.filter((s: { id: string; name: string; type: string }) => s.type === "project")
     const onlyShows = shows.filter((s: { id: string; name: string; type: string }) => s.type === "show")
+
+    const songMap = new Map(songs.map(s => [s.id, s.title]))
+    const showMap = new Map(shows.map(s => [s.id, s.name]))
 
     return (
         <div className="container mx-auto p-6 space-y-6">
@@ -97,21 +106,26 @@ function IndexPage() {
                     </p>
                 ) : (
                     <div className="space-y-2">
-                        {history.map((entry: { id: string; contentType: string; contentName: string; changedByName: string; changedAt: string }) => (
-                            <div
-                                key={entry.id}
-                                className="flex items-center justify-between rounded-lg border p-3 text-sm"
-                            >
-                                <div className="flex items-center gap-3">
-                                    <span className="text-muted-foreground capitalize">{entry.contentType}</span>
-                                    <span className="font-medium">{entry.contentName}</span>
+                        {history.map((entry) => {
+                            const contentName = entry.contentType === "song"
+                                ? (songMap.get(entry.contentId) ?? "Unknown Song")
+                                : (showMap.get(entry.contentId) ?? "Unknown Show")
+                            return (
+                                <div
+                                    key={entry.id}
+                                    className="flex items-center justify-between rounded-lg border p-3 text-sm"
+                                >
+                                    <div className="flex items-center gap-3">
+                                        <span className="text-muted-foreground capitalize">{entry.contentType}</span>
+                                        <span className="font-medium">{contentName}</span>
+                                    </div>
+                                    <div className="flex items-center gap-3 text-muted-foreground">
+                                        <span>{entry.changedByName}</span>
+                                        <span>{new Date(entry.changedAt).toLocaleDateString()}</span>
+                                    </div>
                                 </div>
-                                <div className="flex items-center gap-3 text-muted-foreground">
-                                    <span>{entry.changedByName}</span>
-                                    <span>{new Date(entry.changedAt).toLocaleDateString()}</span>
-                                </div>
-                            </div>
-                        ))}
+                            )
+                        })}
                     </div>
                 )}
             </div>

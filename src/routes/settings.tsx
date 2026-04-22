@@ -1,6 +1,8 @@
 import { useState } from "react"
 import { createFileRoute } from "@tanstack/react-router"
 import { Button } from "@/components/ui/button"
+import { db } from "@/database/db"
+import { settings as settingsTable } from "@/database/schema"
 
 type Settings = {
     max_line_chars: number
@@ -11,8 +13,8 @@ type Settings = {
 
 export const Route = createFileRoute("/settings")({
     loader: async () => {
-        const res = await fetch("/api/settings")
-        const data = (await res.json()) as Partial<Settings>
+        const allSettings = await db.select().from(settingsTable)
+        const data = Object.fromEntries(allSettings.map(s => [s.key, s.value])) as Partial<Settings>
         return { settings: data }
     },
     component: SettingsPage,

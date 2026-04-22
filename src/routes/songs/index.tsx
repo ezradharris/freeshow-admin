@@ -1,20 +1,25 @@
 import { useState } from "react"
 import { createFileRoute, Link } from "@tanstack/react-router"
 import { Button } from "@/components/ui/button"
+import { db } from "@/database/db"
+import { songs } from "@/database/schema"
+import { desc } from "drizzle-orm"
 
 type Song = {
     id: string
     title: string
     author: string | null
     ccliNumber: string | null
-    updatedAt: string
+    updatedAt: Date
 }
 
 export const Route = createFileRoute("/songs/")({
     loader: async () => {
-        const res = await fetch("/api/songs/")
-        const data = await res.json()
-        return { songs: Array.isArray(data) ? (data as Song[]) : [] }
+        const allSongs = await db
+            .select({ id: songs.id, title: songs.title, author: songs.author, ccliNumber: songs.ccliNumber, createdAt: songs.createdAt, updatedAt: songs.updatedAt })
+            .from(songs)
+            .orderBy(desc(songs.updatedAt))
+        return { songs: allSongs }
     },
     component: SongsPage,
 })

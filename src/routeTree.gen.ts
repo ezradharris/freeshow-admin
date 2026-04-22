@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ImportRouteImport } from './routes/import'
+import { Route as HistoryRouteImport } from './routes/history'
 import { Route as ExportRouteImport } from './routes/export'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SongsIndexRouteImport } from './routes/songs/index'
@@ -40,6 +41,11 @@ import { Route as ApiPublicSongsTokenRouteImport } from './routes/api/public/son
 const ImportRoute = ImportRouteImport.update({
   id: '/import',
   path: '/import',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HistoryRoute = HistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExportRoute = ExportRouteImport.update({
@@ -176,6 +182,7 @@ const ApiPublicSongsTokenRoute = ApiPublicSongsTokenRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/export': typeof ExportRoute
+  '/history': typeof HistoryRoute
   '/import': typeof ImportRoute
   '/account/$path': typeof AccountPathRoute
   '/api/export': typeof ApiExportRoute
@@ -205,6 +212,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/export': typeof ExportRoute
+  '/history': typeof HistoryRoute
   '/import': typeof ImportRoute
   '/account/$path': typeof AccountPathRoute
   '/api/export': typeof ApiExportRoute
@@ -235,6 +243,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/export': typeof ExportRoute
+  '/history': typeof HistoryRoute
   '/import': typeof ImportRoute
   '/account/$path': typeof AccountPathRoute
   '/api/export': typeof ApiExportRoute
@@ -266,6 +275,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/export'
+    | '/history'
     | '/import'
     | '/account/$path'
     | '/api/export'
@@ -295,6 +305,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/export'
+    | '/history'
     | '/import'
     | '/account/$path'
     | '/api/export'
@@ -324,6 +335,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/export'
+    | '/history'
     | '/import'
     | '/account/$path'
     | '/api/export'
@@ -354,6 +366,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ExportRoute: typeof ExportRoute
+  HistoryRoute: typeof HistoryRoute
   ImportRoute: typeof ImportRoute
   AccountPathRoute: typeof AccountPathRoute
   ApiExportRoute: typeof ApiExportRoute
@@ -385,6 +398,13 @@ declare module '@tanstack/react-router' {
       path: '/import'
       fullPath: '/import'
       preLoaderRoute: typeof ImportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/history': {
+      id: '/history'
+      path: '/history'
+      fullPath: '/history'
+      preLoaderRoute: typeof HistoryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/export': {
@@ -601,6 +621,7 @@ const ApiSongsIdRouteWithChildren = ApiSongsIdRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ExportRoute: ExportRoute,
+  HistoryRoute: HistoryRoute,
   ImportRoute: ImportRoute,
   AccountPathRoute: AccountPathRoute,
   ApiExportRoute: ApiExportRoute,

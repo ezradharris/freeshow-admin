@@ -17,17 +17,19 @@ export function parseFreeshowFile(raw: unknown): FreeshowShow {
 }
 
 export function parseSong(show: FreeshowShow): ParsedSong {
-  const title = show.meta?.title ?? show.name;
+  const title = show.meta?.title ?? show.name ?? "";
   const author = show.meta?.author ?? null;
   const copyright = show.meta?.copyright ?? null;
-  const ccliNumber = show.meta?.CCLI ?? null;
+  const ccliNumber = show.meta?.CCLI != null ? String(show.meta.CCLI) : null;
 
   // Determine slide order from first layout, or fall back to Object.entries order
   let slideIds: string[];
   const layoutEntries = Object.entries(show.layouts);
   if (layoutEntries.length > 0) {
     const [, firstLayout] = layoutEntries[0];
-    slideIds = firstLayout.slides.map((s) => s.id);
+    slideIds = Array.isArray(firstLayout.slides)
+      ? firstLayout.slides.map((s) => s.id).filter((id) => id in show.slides)
+      : [];
   } else {
     slideIds = Object.keys(show.slides);
   }
@@ -36,12 +38,18 @@ export function parseSong(show: FreeshowShow): ParsedSong {
     .filter((id) => id in show.slides)
     .map((id, index) => {
       const slide = show.slides[id];
-      const type = slide.group.trim().toLowerCase();
-      const label = type.charAt(0).toUpperCase() + type.slice(1);
+      const rawGroup = (typeof slide.group === "string" ? slide.group.trim() : "") || "unknown";
+      const type = rawGroup.toLowerCase();
+      const label = rawGroup.charAt(0).toUpperCase() + rawGroup.slice(1);
 
-      const content = slide.items
-        .map((item) => item.lines.map((lineArr) => lineArr.join("")).join("\n"))
-        .join("\n\n");
+      const items = Array.isArray(slide.items) ? slide.items : [];
+      const content = items
+        .map((item) => {
+          const lines = Array.isArray(item.lines) ? item.lines : [];
+          return lines.map((parts) => (Array.isArray(parts) ? parts.join("") : String(parts))).join("\n");
+        })
+        .join("\n\n")
+        .trim();
 
       return {
         type,

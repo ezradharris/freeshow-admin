@@ -19,22 +19,23 @@ export function serializeSong(song: {
 
   const sorted = [...song.sections].sort((a, b) => a.sortOrder - b.sortOrder);
 
+  // Note: slide IDs are not preserved on round-trip. Per-slide media bindings
+  // from rawImport that reference original slide UUIDs will be lost.
   const slideIds: string[] = sorted.map(() => crypto.randomUUID());
 
   const slides: FreeshowShow["slides"] = {};
   for (let i = 0; i < sorted.length; i++) {
     const section = sorted[i];
     const id = slideIds[i];
+    const slideItems = section.content.split("\n\n").map((block) => ({
+      lines: block.split("\n").map((line) => [line]),
+    }));
     slides[id] = {
       group: section.type,
       color: null,
       settings: {},
       notes: "",
-      items: [
-        {
-          lines: section.content.split("\n").map((line) => [line]),
-        },
-      ],
+      items: slideItems,
     };
   }
 
@@ -58,9 +59,9 @@ export function serializeSong(song: {
     meta: {
       ...existingMeta,
       title: song.title,
-      author: song.author ?? "",
-      copyright: song.copyright ?? "",
-      CCLI: song.ccliNumber ?? "",
+      ...(song.author !== null ? { author: song.author } : {}),
+      ...(song.copyright !== null ? { copyright: song.copyright } : {}),
+      ...(song.ccliNumber !== null ? { CCLI: song.ccliNumber } : {}),
     },
     slides,
     layouts,

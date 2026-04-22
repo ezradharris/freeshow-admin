@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ImportRouteImport } from './routes/import'
 import { Route as HistoryRouteImport } from './routes/history'
 import { Route as ExportRouteImport } from './routes/export'
@@ -38,6 +39,11 @@ import { Route as ApiSongsIdHistoryRouteImport } from './routes/api/songs/$id/hi
 import { Route as ApiShowsIdHistoryRouteImport } from './routes/api/shows/$id/history'
 import { Route as ApiPublicSongsTokenRouteImport } from './routes/api/public/songs/$token'
 
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ImportRoute = ImportRouteImport.update({
   id: '/import',
   path: '/import',
@@ -184,6 +190,7 @@ export interface FileRoutesByFullPath {
   '/export': typeof ExportRoute
   '/history': typeof HistoryRoute
   '/import': typeof ImportRoute
+  '/settings': typeof SettingsRoute
   '/account/$path': typeof AccountPathRoute
   '/api/export': typeof ApiExportRoute
   '/api/history': typeof ApiHistoryRoute
@@ -214,6 +221,7 @@ export interface FileRoutesByTo {
   '/export': typeof ExportRoute
   '/history': typeof HistoryRoute
   '/import': typeof ImportRoute
+  '/settings': typeof SettingsRoute
   '/account/$path': typeof AccountPathRoute
   '/api/export': typeof ApiExportRoute
   '/api/history': typeof ApiHistoryRoute
@@ -245,6 +253,7 @@ export interface FileRoutesById {
   '/export': typeof ExportRoute
   '/history': typeof HistoryRoute
   '/import': typeof ImportRoute
+  '/settings': typeof SettingsRoute
   '/account/$path': typeof AccountPathRoute
   '/api/export': typeof ApiExportRoute
   '/api/history': typeof ApiHistoryRoute
@@ -277,6 +286,7 @@ export interface FileRouteTypes {
     | '/export'
     | '/history'
     | '/import'
+    | '/settings'
     | '/account/$path'
     | '/api/export'
     | '/api/history'
@@ -307,6 +317,7 @@ export interface FileRouteTypes {
     | '/export'
     | '/history'
     | '/import'
+    | '/settings'
     | '/account/$path'
     | '/api/export'
     | '/api/history'
@@ -337,6 +348,7 @@ export interface FileRouteTypes {
     | '/export'
     | '/history'
     | '/import'
+    | '/settings'
     | '/account/$path'
     | '/api/export'
     | '/api/history'
@@ -368,6 +380,7 @@ export interface RootRouteChildren {
   ExportRoute: typeof ExportRoute
   HistoryRoute: typeof HistoryRoute
   ImportRoute: typeof ImportRoute
+  SettingsRoute: typeof SettingsRoute
   AccountPathRoute: typeof AccountPathRoute
   ApiExportRoute: typeof ApiExportRoute
   ApiHistoryRoute: typeof ApiHistoryRoute
@@ -393,6 +406,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/import': {
       id: '/import'
       path: '/import'
@@ -623,6 +643,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExportRoute: ExportRoute,
   HistoryRoute: HistoryRoute,
   ImportRoute: ImportRoute,
+  SettingsRoute: SettingsRoute,
   AccountPathRoute: AccountPathRoute,
   ApiExportRoute: ApiExportRoute,
   ApiHistoryRoute: ApiHistoryRoute,

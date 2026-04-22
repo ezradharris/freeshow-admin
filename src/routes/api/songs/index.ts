@@ -37,6 +37,7 @@ export const Route = createFileRoute("/api/songs/")({
                         ccliNumber?: string
                         sections?: Array<{ type: string; label: string; content: string; sortOrder: number }>
                     }
+                    if (!body.title?.trim()) return errorResponse("title is required", 400)
                     const [song] = await db.insert(songs).values({
                         title: body.title,
                         author: body.author ?? null,
@@ -51,7 +52,7 @@ export const Route = createFileRoute("/api/songs/")({
                     await db.insert(contentHistory).values({
                         contentType: "song",
                         contentId: song.id,
-                        snapshot: JSON.parse(JSON.stringify({ ...song, sections: body.sections ?? [] })),
+                        snapshot: structuredClone({ ...song, sections: body.sections ?? [] }),
                         changedBy: session.user.id,
                     })
                     return jsonResponse(song, 201)

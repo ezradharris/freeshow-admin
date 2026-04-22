@@ -41,7 +41,7 @@ export const Route = createFileRoute("/api/shows/$id")({
                     await db.insert(contentHistory).values({
                         contentType: "show",
                         contentId: id,
-                        snapshot: JSON.parse(JSON.stringify(updated)),
+                        snapshot: structuredClone(updated),
                         changedBy: session.user.id,
                     })
 
@@ -54,8 +54,8 @@ export const Route = createFileRoute("/api/shows/$id")({
             DELETE: async ({ request, params }) => {
                 try {
                     await requireSession(request)
-                    const id = params.id
-                    await db.delete(shows).where(eq(shows.id, id))
+                    const deleted = await db.delete(shows).where(eq(shows.id, params.id)).returning({ id: shows.id })
+                    if (!deleted.length) return errorResponse("Not found", 404)
                     return jsonResponse({ ok: true })
                 } catch (e) {
                     if (e instanceof Response) return e

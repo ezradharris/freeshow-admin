@@ -35,6 +35,7 @@ export const Route = createFileRoute("/api/songs/$id")({
                         ccliNumber?: string
                         sections?: Array<{ type: string; label: string; content: string; sortOrder: number }>
                     }
+                    if (body.title !== undefined && !body.title?.trim()) return errorResponse("title cannot be empty", 400)
                     const [existing] = await db.select().from(songs).where(eq(songs.id, id))
                     if (!existing) return errorResponse("Not found", 404)
 
@@ -70,7 +71,7 @@ export const Route = createFileRoute("/api/songs/$id")({
                     await db.insert(contentHistory).values({
                         contentType: "song",
                         contentId: id,
-                        snapshot: JSON.parse(JSON.stringify({ ...updated, sections })),
+                        snapshot: structuredClone({ ...updated, sections }),
                         changedBy: session.user.id,
                     })
 
@@ -83,8 +84,8 @@ export const Route = createFileRoute("/api/songs/$id")({
             DELETE: async ({ request, params }) => {
                 try {
                     await requireSession(request)
-                    const id = params.id
-                    await db.delete(songs).where(eq(songs.id, id))
+                    const deleted = await db.delete(songs).where(eq(songs.id, params.id)).returning({ id: songs.id })
+                    if (!deleted.length) return errorResponse("Not found", 404)
                     return jsonResponse({ ok: true })
                 } catch (e) {
                     if (e instanceof Response) return e

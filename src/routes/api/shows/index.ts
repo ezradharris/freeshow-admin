@@ -30,6 +30,9 @@ export const Route = createFileRoute("/api/shows/")({
                 try {
                     const session = await requireSession(request)
                     const body = await request.json() as { name: string; type: string; rawJson: unknown }
+                    if (!body.name?.trim()) return errorResponse("name is required", 400)
+                    if (body.type !== "show" && body.type !== "project") return errorResponse("type must be 'show' or 'project'", 400)
+                    if (!body.rawJson || typeof body.rawJson !== "object") return errorResponse("rawJson is required", 400)
                     const [show] = await db.insert(shows).values({
                         name: body.name,
                         type: body.type,
@@ -38,7 +41,7 @@ export const Route = createFileRoute("/api/shows/")({
                     await db.insert(contentHistory).values({
                         contentType: "show",
                         contentId: show.id,
-                        snapshot: JSON.parse(JSON.stringify(show)),
+                        snapshot: structuredClone(show),
                         changedBy: session.user.id,
                     })
                     return jsonResponse(show, 201)

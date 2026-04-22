@@ -21,6 +21,9 @@ export const Route = createFileRoute("/api/settings")({
                 try {
                     const session = await requireSession(request)
                     const body = await request.json() as Record<string, unknown>
+                    const VALID_SETTINGS_KEYS = new Set(["max_line_chars", "warn_line_chars", "auto_line_break", "line_break_strategy"])
+                    const invalidKeys = Object.keys(body).filter(k => !VALID_SETTINGS_KEYS.has(k))
+                    if (invalidKeys.length > 0) return errorResponse(`Invalid settings keys: ${invalidKeys.join(", ")}`, 400)
                     for (const [key, value] of Object.entries(body)) {
                         await db.insert(settings).values({ key, value, updatedBy: session.user.id })
                             .onConflictDoUpdate({

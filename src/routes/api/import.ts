@@ -12,16 +12,25 @@ export const Route = createFileRoute("/api/import")({
                 try {
                     const session = await requireSession(request)
                     const formData = await request.formData()
-                    const results: Array<{ name: string; type: string; status: "imported" | "duplicate"; id?: string }> = []
+                    const results: Array<{ name: string; type: string; status: "imported" | "duplicate" | "error"; id?: string; reason?: string }> = []
 
-                    for (const [, file] of formData.entries()) {
-                        if (!(file instanceof File)) continue
+                    const MAX_FILES = 50
+                    const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5 MB
+
+                    const allEntries = [...formData.entries()].filter(([, v]) => v instanceof File) as [string, File][]
+                    const entries = allEntries.slice(0, MAX_FILES)
+
+                    for (const [, file] of entries) {
+                        if (file.size > MAX_FILE_SIZE) {
+                            results.push({ name: file.name, type: "unknown", status: "error", reason: "File too large (max 5 MB)" })
+                            continue
+                        }
                         const text = await file.text()
                         let parsed: unknown
                         try {
                             parsed = JSON.parse(text)
                         } catch {
-                            results.push({ name: file.name, type: "unknown", status: "imported" })
+                            results.push({ name: file.name, type: "unknown", status: "error", reason: "Invalid JSON" })
                             continue
                         }
 
@@ -29,7 +38,7 @@ export const Route = createFileRoute("/api/import")({
                         try {
                             show = parseFreeshowFile(parsed)
                         } catch {
-                            results.push({ name: file.name, type: "unknown", status: "imported" })
+                            results.push({ name: file.name, type: "unknown", status: "error", reason: "Invalid FreeShow file" })
                             continue
                         }
 
@@ -61,7 +70,7 @@ export const Route = createFileRoute("/api/import")({
                             await db.insert(contentHistory).values({
                                 contentType: "song",
                                 contentId: song.id,
-                                snapshot: JSON.parse(JSON.stringify({ ...song, sections: songData.sections })),
+                                snapshot: structuredClone({ ...song, sections: songData.sections }),
                                 changedBy: session.user.id,
                             })
                             results.push({ name: songData.title, type: "song", status: "imported", id: song.id })
@@ -85,7 +94,7 @@ export const Route = createFileRoute("/api/import")({
                             await db.insert(contentHistory).values({
                                 contentType: "show",
                                 contentId: savedShow.id,
-                                snapshot: JSON.parse(JSON.stringify(savedShow)),
+                                snapshot: structuredClone(savedShow),
                                 changedBy: session.user.id,
                             })
                             results.push({ name: showName, type: showType, status: "imported", id: savedShow.id })

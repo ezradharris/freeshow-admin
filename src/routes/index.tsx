@@ -69,7 +69,7 @@ function IndexPage() {
             {/* Quick actions */}
             <div className="flex flex-wrap gap-3">
                 <Button asChild>
-                    <Link to="/import">
+                    <Link to="/api/import">
                         <Upload className="mr-2 h-4 w-4" />
                         Import
                     </Link>

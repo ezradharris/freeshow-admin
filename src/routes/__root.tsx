@@ -1,14 +1,14 @@
 import { TanStackDevtools } from "@tanstack/react-devtools"
 import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router"
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools"
-import { Header } from "@/components/header"
+import { NavSidebar } from "@/components/nav-sidebar"
 import { Providers } from "@/components/providers"
 import appCss from "../styles/styles.css?url"
 
 export const Route = createRootRoute({
     head: () => ({
         meta: [
-            { title: "Better Auth Starter" },
+            { title: "FreeShow Admin" },
             { charSet: "utf-8" },
             {
                 name: "viewport",
@@ -37,11 +37,13 @@ function RootDocument({ children }: { children: React.ReactNode }) {
                 <HeadContent />
             </head>
 
-            <body className="min-h-screen flex flex-col">
+            <body className="min-h-screen bg-background">
                 <Providers>
-                    <Header />
-
-                    {children}
+                    <NavSidebar />
+                    {/* Main content offset for sidebar on desktop, padding-bottom for mobile nav */}
+                    <main className="md:pl-60 min-h-screen pb-16 md:pb-0">
+                        {children}
+                    </main>
                 </Providers>
 
                 <TanStackDevtools

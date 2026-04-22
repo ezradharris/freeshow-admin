@@ -3,9 +3,8 @@ import { Button } from "@/components/ui/button"
 
 interface HistoryEntry {
     id: string
-    createdAt: string
-    userId: string | null
-    userEmail?: string | null
+    changedAt: string
+    changedByName: string | null
 }
 
 interface HistorySidebarProps {
@@ -68,11 +67,11 @@ export function HistorySidebar({ songId, onRestore }: HistorySidebarProps) {
                     <div key={entry.id} className="flex items-center justify-between gap-2 py-1 border-b last:border-b-0">
                         <div className="min-w-0">
                             <p className="text-xs text-foreground">
-                                {new Date(entry.createdAt).toLocaleString()}
+                                {new Date(entry.changedAt).toLocaleString()}
                             </p>
-                            {(entry.userEmail ?? entry.userId) && (
+                            {(entry.changedByName ?? "Unknown") && (
                                 <p className="text-xs text-muted-foreground truncate">
-                                    {entry.userEmail ?? entry.userId}
+                                    {entry.changedByName ?? "Unknown"}
                                 </p>
                             )}
                         </div>

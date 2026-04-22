@@ -39,7 +39,7 @@ function SongEditorPage() {
     async function handleSave() {
         setSaving(true)
         try {
-            await fetch(`/api/songs/${song.id}`, {
+            const res = await fetch(`/api/songs/${song.id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -50,6 +50,10 @@ function SongEditorPage() {
                     sections: song.sections.map((s: SongSection, i: number) => ({ ...s, sortOrder: i })),
                 }),
             })
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({ error: "Save failed" })) as { error?: string }
+                alert(err.error ?? "Failed to save song")
+            }
         } finally {
             setSaving(false)
         }

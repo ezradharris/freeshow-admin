@@ -43,6 +43,11 @@ function NewSongPage() {
                     sections: song.sections.map((s, i) => ({ ...s, sortOrder: i })),
                 }),
             })
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({ error: "Save failed" })) as { error?: string }
+                alert(err.error ?? "Failed to create song")
+                return
+            }
             const data = await res.json() as { id: string }
             await navigate({ to: "/songs/$id", params: { id: data.id } })
         } finally {

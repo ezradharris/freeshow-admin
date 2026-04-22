@@ -29,7 +29,7 @@ function validateLines(content: string, settings: Settings) {
     const warnChars = settings.warn_line_chars ?? 40
     return content.split("\n").map(line => ({
         line,
-        status: line.length > maxChars ? "error" : line.length >= warnChars ? "warn" : "ok"
+        status: line.length >= maxChars ? "error" : line.length >= warnChars ? "warn" : "ok"
     }))
 }
 

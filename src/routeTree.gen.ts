@@ -21,6 +21,7 @@ import { Route as SongsNewRouteImport } from './routes/songs/new'
 import { Route as SongsIdRouteImport } from './routes/songs/$id'
 import { Route as ShowsNewRouteImport } from './routes/shows/new'
 import { Route as ShowsIdRouteImport } from './routes/shows/$id'
+import { Route as STokenRouteImport } from './routes/s/$token'
 import { Route as ProjectsNewRouteImport } from './routes/projects/new'
 import { Route as ProjectsIdRouteImport } from './routes/projects/$id'
 import { Route as AuthPathRouteImport } from './routes/auth/$path'
@@ -97,6 +98,11 @@ const ShowsNewRoute = ShowsNewRouteImport.update({
 const ShowsIdRoute = ShowsIdRouteImport.update({
   id: '/shows/$id',
   path: '/shows/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const STokenRoute = STokenRouteImport.update({
+  id: '/s/$token',
+  path: '/s/$token',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProjectsNewRoute = ProjectsNewRouteImport.update({
@@ -199,6 +205,7 @@ export interface FileRoutesByFullPath {
   '/auth/$path': typeof AuthPathRoute
   '/projects/$id': typeof ProjectsIdRoute
   '/projects/new': typeof ProjectsNewRoute
+  '/s/$token': typeof STokenRoute
   '/shows/$id': typeof ShowsIdRoute
   '/shows/new': typeof ShowsNewRoute
   '/songs/$id': typeof SongsIdRoute
@@ -230,6 +237,7 @@ export interface FileRoutesByTo {
   '/auth/$path': typeof AuthPathRoute
   '/projects/$id': typeof ProjectsIdRoute
   '/projects/new': typeof ProjectsNewRoute
+  '/s/$token': typeof STokenRoute
   '/shows/$id': typeof ShowsIdRoute
   '/shows/new': typeof ShowsNewRoute
   '/songs/$id': typeof SongsIdRoute
@@ -262,6 +270,7 @@ export interface FileRoutesById {
   '/auth/$path': typeof AuthPathRoute
   '/projects/$id': typeof ProjectsIdRoute
   '/projects/new': typeof ProjectsNewRoute
+  '/s/$token': typeof STokenRoute
   '/shows/$id': typeof ShowsIdRoute
   '/shows/new': typeof ShowsNewRoute
   '/songs/$id': typeof SongsIdRoute
@@ -295,6 +304,7 @@ export interface FileRouteTypes {
     | '/auth/$path'
     | '/projects/$id'
     | '/projects/new'
+    | '/s/$token'
     | '/shows/$id'
     | '/shows/new'
     | '/songs/$id'
@@ -326,6 +336,7 @@ export interface FileRouteTypes {
     | '/auth/$path'
     | '/projects/$id'
     | '/projects/new'
+    | '/s/$token'
     | '/shows/$id'
     | '/shows/new'
     | '/songs/$id'
@@ -357,6 +368,7 @@ export interface FileRouteTypes {
     | '/auth/$path'
     | '/projects/$id'
     | '/projects/new'
+    | '/s/$token'
     | '/shows/$id'
     | '/shows/new'
     | '/songs/$id'
@@ -389,6 +401,7 @@ export interface RootRouteChildren {
   AuthPathRoute: typeof AuthPathRoute
   ProjectsIdRoute: typeof ProjectsIdRoute
   ProjectsNewRoute: typeof ProjectsNewRoute
+  STokenRoute: typeof STokenRoute
   ShowsIdRoute: typeof ShowsIdRoute
   ShowsNewRoute: typeof ShowsNewRoute
   SongsIdRoute: typeof SongsIdRoute
@@ -488,6 +501,13 @@ declare module '@tanstack/react-router' {
       path: '/shows/$id'
       fullPath: '/shows/$id'
       preLoaderRoute: typeof ShowsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/s/$token': {
+      id: '/s/$token'
+      path: '/s/$token'
+      fullPath: '/s/$token'
+      preLoaderRoute: typeof STokenRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/projects/new': {
@@ -652,6 +672,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthPathRoute: AuthPathRoute,
   ProjectsIdRoute: ProjectsIdRoute,
   ProjectsNewRoute: ProjectsNewRoute,
+  STokenRoute: STokenRoute,
   ShowsIdRoute: ShowsIdRoute,
   ShowsNewRoute: ShowsNewRoute,
   SongsIdRoute: SongsIdRoute,

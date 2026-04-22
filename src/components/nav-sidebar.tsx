@@ -78,6 +78,9 @@ function MobileNavLink({ to, label, icon: Icon }: NavItem) {
 }
 
 export function NavSidebar() {
+    const pathname = useRouterState({ select: (s) => s.location.pathname })
+    if (pathname.startsWith("/s/")) return null
+
     return (
         <>
             {/* Desktop sidebar */}

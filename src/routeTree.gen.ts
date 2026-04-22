@@ -9,6 +9,8 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ImportRouteImport } from './routes/import'
+import { Route as ExportRouteImport } from './routes/export'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SongsIndexRouteImport } from './routes/songs/index'
 import { Route as ShowsIndexRouteImport } from './routes/shows/index'
@@ -35,6 +37,16 @@ import { Route as ApiSongsIdHistoryRouteImport } from './routes/api/songs/$id/hi
 import { Route as ApiShowsIdHistoryRouteImport } from './routes/api/shows/$id/history'
 import { Route as ApiPublicSongsTokenRouteImport } from './routes/api/public/songs/$token'
 
+const ImportRoute = ImportRouteImport.update({
+  id: '/import',
+  path: '/import',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExportRoute = ExportRouteImport.update({
+  id: '/export',
+  path: '/export',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -163,6 +175,8 @@ const ApiPublicSongsTokenRoute = ApiPublicSongsTokenRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/export': typeof ExportRoute
+  '/import': typeof ImportRoute
   '/account/$path': typeof AccountPathRoute
   '/api/export': typeof ApiExportRoute
   '/api/history': typeof ApiHistoryRoute
@@ -190,6 +204,8 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/export': typeof ExportRoute
+  '/import': typeof ImportRoute
   '/account/$path': typeof AccountPathRoute
   '/api/export': typeof ApiExportRoute
   '/api/history': typeof ApiHistoryRoute
@@ -218,6 +234,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/export': typeof ExportRoute
+  '/import': typeof ImportRoute
   '/account/$path': typeof AccountPathRoute
   '/api/export': typeof ApiExportRoute
   '/api/history': typeof ApiHistoryRoute
@@ -247,6 +265,8 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/export'
+    | '/import'
     | '/account/$path'
     | '/api/export'
     | '/api/history'
@@ -274,6 +294,8 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/export'
+    | '/import'
     | '/account/$path'
     | '/api/export'
     | '/api/history'
@@ -301,6 +323,8 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/export'
+    | '/import'
     | '/account/$path'
     | '/api/export'
     | '/api/history'
@@ -329,6 +353,8 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ExportRoute: typeof ExportRoute
+  ImportRoute: typeof ImportRoute
   AccountPathRoute: typeof AccountPathRoute
   ApiExportRoute: typeof ApiExportRoute
   ApiHistoryRoute: typeof ApiHistoryRoute
@@ -354,6 +380,20 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/import': {
+      id: '/import'
+      path: '/import'
+      fullPath: '/import'
+      preLoaderRoute: typeof ImportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/export': {
+      id: '/export'
+      path: '/export'
+      fullPath: '/export'
+      preLoaderRoute: typeof ExportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -560,6 +600,8 @@ const ApiSongsIdRouteWithChildren = ApiSongsIdRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ExportRoute: ExportRoute,
+  ImportRoute: ImportRoute,
   AccountPathRoute: AccountPathRoute,
   ApiExportRoute: ApiExportRoute,
   ApiHistoryRoute: ApiHistoryRoute,

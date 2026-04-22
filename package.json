@@ -9,7 +9,11 @@
         "test": "vitest run",
         "format": "biome format",
         "lint": "biome lint",
-        "check": "biome check"
+        "check": "biome check",
+        "db:generate": "drizzle-kit generate",
+        "db:migrate": "drizzle-kit migrate",
+        "db:push": "drizzle-kit push",
+        "db:studio": "drizzle-kit studio"
     },
     "dependencies": {
         "@daveyplate/better-auth-ui": "^3.3.0",

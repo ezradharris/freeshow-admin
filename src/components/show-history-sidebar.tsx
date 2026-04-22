@@ -41,12 +41,19 @@ export function ShowHistorySidebar({ showId, onRestore }: ShowHistorySidebarProp
     async function handleRestore(historyId: string) {
         setRestoringId(historyId)
         try {
-            await fetch(`/api/shows/${showId}/history`, {
+            const res = await fetch(`/api/shows/${showId}/history`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ historyId }),
             })
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({ error: "Restore failed" })) as { error?: string }
+                setError(err.error ?? "Restore failed")
+                return
+            }
             onRestore()
+        } catch {
+            setError("Restore failed — network error")
         } finally {
             setRestoringId(null)
         }

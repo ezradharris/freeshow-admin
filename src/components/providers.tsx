@@ -21,6 +21,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
                 navigate={(href) => navigate({ href })}
                 replace={(href) => navigate({ href, replace: true })}
                 Link={({ href, ...props }) => <Link to={href} {...props} />}
+                redirectTo="/dashboard"
             >
                 {children}
 

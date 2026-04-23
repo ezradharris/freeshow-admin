@@ -10,60 +10,28 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
-import { Route as SettingsRouteImport } from './routes/settings'
-import { Route as ImportRouteImport } from './routes/import'
-import { Route as HistoryRouteImport } from './routes/history'
-import { Route as ExportRouteImport } from './routes/export'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as SongsIndexRouteImport } from './routes/songs/index'
-import { Route as ShowsIndexRouteImport } from './routes/shows/index'
-import { Route as ProjectsIndexRouteImport } from './routes/projects/index'
-import { Route as SongsNewRouteImport } from './routes/songs/new'
-import { Route as SongsIdRouteImport } from './routes/songs/$id'
-import { Route as ShowsNewRouteImport } from './routes/shows/new'
-import { Route as ShowsIdRouteImport } from './routes/shows/$id'
 import { Route as STokenRouteImport } from './routes/s/$token'
-import { Route as ProjectsNewRouteImport } from './routes/projects/new'
-import { Route as ProjectsIdRouteImport } from './routes/projects/$id'
 import { Route as AuthPathRouteImport } from './routes/auth/$path'
-import { Route as ApiSettingsRouteImport } from './routes/api/settings'
-import { Route as ApiImportRouteImport } from './routes/api/import'
-import { Route as ApiHistoryRouteImport } from './routes/api/history'
-import { Route as ApiExportRouteImport } from './routes/api/export'
-import { Route as AccountPathRouteImport } from './routes/account/$path'
-import { Route as ApiSongsIndexRouteImport } from './routes/api/songs/index'
-import { Route as ApiShowsIndexRouteImport } from './routes/api/shows/index'
-import { Route as ApiSongsIdRouteImport } from './routes/api/songs/$id'
-import { Route as ApiShowsIdRouteImport } from './routes/api/shows/$id'
+import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
+import { Route as AuthenticatedImportRouteImport } from './routes/_authenticated/import'
+import { Route as AuthenticatedHistoryRouteImport } from './routes/_authenticated/history'
+import { Route as AuthenticatedExportRouteImport } from './routes/_authenticated/export'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedSongsIndexRouteImport } from './routes/_authenticated/songs/index'
+import { Route as AuthenticatedShowsIndexRouteImport } from './routes/_authenticated/shows/index'
+import { Route as AuthenticatedProjectsIndexRouteImport } from './routes/_authenticated/projects/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
-import { Route as ApiSongsIdShareRouteImport } from './routes/api/songs/$id/share'
-import { Route as ApiSongsIdHistoryRouteImport } from './routes/api/songs/$id/history'
-import { Route as ApiShowsIdHistoryRouteImport } from './routes/api/shows/$id/history'
-import { Route as ApiPublicSongsTokenRouteImport } from './routes/api/public/songs/$token'
+import { Route as AuthenticatedSongsNewRouteImport } from './routes/_authenticated/songs/new'
+import { Route as AuthenticatedSongsIdRouteImport } from './routes/_authenticated/songs/$id'
+import { Route as AuthenticatedShowsNewRouteImport } from './routes/_authenticated/shows/new'
+import { Route as AuthenticatedShowsIdRouteImport } from './routes/_authenticated/shows/$id'
+import { Route as AuthenticatedProjectsNewRouteImport } from './routes/_authenticated/projects/new'
+import { Route as AuthenticatedProjectsIdRouteImport } from './routes/_authenticated/projects/$id'
+import { Route as AuthenticatedAccountPathRouteImport } from './routes/_authenticated/account/$path'
 
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SettingsRoute = SettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ImportRoute = ImportRouteImport.update({
-  id: '/import',
-  path: '/import',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HistoryRoute = HistoryRouteImport.update({
-  id: '/history',
-  path: '/history',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ExportRoute = ExportRouteImport.update({
-  id: '/export',
-  path: '/export',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -71,54 +39,9 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SongsIndexRoute = SongsIndexRouteImport.update({
-  id: '/songs/',
-  path: '/songs/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ShowsIndexRoute = ShowsIndexRouteImport.update({
-  id: '/shows/',
-  path: '/shows/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
-  id: '/projects/',
-  path: '/projects/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SongsNewRoute = SongsNewRouteImport.update({
-  id: '/songs/new',
-  path: '/songs/new',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SongsIdRoute = SongsIdRouteImport.update({
-  id: '/songs/$id',
-  path: '/songs/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ShowsNewRoute = ShowsNewRouteImport.update({
-  id: '/shows/new',
-  path: '/shows/new',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ShowsIdRoute = ShowsIdRouteImport.update({
-  id: '/shows/$id',
-  path: '/shows/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const STokenRoute = STokenRouteImport.update({
   id: '/s/$token',
   path: '/s/$token',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProjectsNewRoute = ProjectsNewRouteImport.update({
-  id: '/projects/new',
-  path: '/projects/new',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProjectsIdRoute = ProjectsIdRouteImport.update({
-  id: '/projects/$id',
-  path: '/projects/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthPathRoute = AuthPathRouteImport.update({
@@ -126,342 +49,237 @@ const AuthPathRoute = AuthPathRouteImport.update({
   path: '/auth/$path',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiSettingsRoute = ApiSettingsRouteImport.update({
-  id: '/api/settings',
-  path: '/api/settings',
-  getParentRoute: () => rootRouteImport,
+const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
-const ApiImportRoute = ApiImportRouteImport.update({
-  id: '/api/import',
-  path: '/api/import',
-  getParentRoute: () => rootRouteImport,
+const AuthenticatedImportRoute = AuthenticatedImportRouteImport.update({
+  id: '/import',
+  path: '/import',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
-const ApiHistoryRoute = ApiHistoryRouteImport.update({
-  id: '/api/history',
-  path: '/api/history',
-  getParentRoute: () => rootRouteImport,
+const AuthenticatedHistoryRoute = AuthenticatedHistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
-const ApiExportRoute = ApiExportRouteImport.update({
-  id: '/api/export',
-  path: '/api/export',
-  getParentRoute: () => rootRouteImport,
+const AuthenticatedExportRoute = AuthenticatedExportRouteImport.update({
+  id: '/export',
+  path: '/export',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
-const AccountPathRoute = AccountPathRouteImport.update({
-  id: '/account/$path',
-  path: '/account/$path',
-  getParentRoute: () => rootRouteImport,
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
-const ApiSongsIndexRoute = ApiSongsIndexRouteImport.update({
-  id: '/api/songs/',
-  path: '/api/songs/',
-  getParentRoute: () => rootRouteImport,
+const AuthenticatedSongsIndexRoute = AuthenticatedSongsIndexRouteImport.update({
+  id: '/songs/',
+  path: '/songs/',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
-const ApiShowsIndexRoute = ApiShowsIndexRouteImport.update({
-  id: '/api/shows/',
-  path: '/api/shows/',
-  getParentRoute: () => rootRouteImport,
+const AuthenticatedShowsIndexRoute = AuthenticatedShowsIndexRouteImport.update({
+  id: '/shows/',
+  path: '/shows/',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
-const ApiSongsIdRoute = ApiSongsIdRouteImport.update({
-  id: '/api/songs/$id',
-  path: '/api/songs/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiShowsIdRoute = ApiShowsIdRouteImport.update({
-  id: '/api/shows/$id',
-  path: '/api/shows/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
+const AuthenticatedProjectsIndexRoute =
+  AuthenticatedProjectsIndexRouteImport.update({
+    id: '/projects/',
+    path: '/projects/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiSongsIdShareRoute = ApiSongsIdShareRouteImport.update({
-  id: '/share',
-  path: '/share',
-  getParentRoute: () => ApiSongsIdRoute,
+const AuthenticatedSongsNewRoute = AuthenticatedSongsNewRouteImport.update({
+  id: '/songs/new',
+  path: '/songs/new',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
-const ApiSongsIdHistoryRoute = ApiSongsIdHistoryRouteImport.update({
-  id: '/history',
-  path: '/history',
-  getParentRoute: () => ApiSongsIdRoute,
+const AuthenticatedSongsIdRoute = AuthenticatedSongsIdRouteImport.update({
+  id: '/songs/$id',
+  path: '/songs/$id',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
-const ApiShowsIdHistoryRoute = ApiShowsIdHistoryRouteImport.update({
-  id: '/history',
-  path: '/history',
-  getParentRoute: () => ApiShowsIdRoute,
+const AuthenticatedShowsNewRoute = AuthenticatedShowsNewRouteImport.update({
+  id: '/shows/new',
+  path: '/shows/new',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
-const ApiPublicSongsTokenRoute = ApiPublicSongsTokenRouteImport.update({
-  id: '/api/public/songs/$token',
-  path: '/api/public/songs/$token',
-  getParentRoute: () => rootRouteImport,
+const AuthenticatedShowsIdRoute = AuthenticatedShowsIdRouteImport.update({
+  id: '/shows/$id',
+  path: '/shows/$id',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedProjectsNewRoute =
+  AuthenticatedProjectsNewRouteImport.update({
+    id: '/projects/new',
+    path: '/projects/new',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedProjectsIdRoute = AuthenticatedProjectsIdRouteImport.update({
+  id: '/projects/$id',
+  path: '/projects/$id',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedAccountPathRoute =
+  AuthenticatedAccountPathRouteImport.update({
+    id: '/account/$path',
+    path: '/account/$path',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/_authenticated': typeof AuthenticatedRoute
-  '/export': typeof ExportRoute
-  '/history': typeof HistoryRoute
-  '/import': typeof ImportRoute
-  '/settings': typeof SettingsRoute
-  '/account/$path': typeof AccountPathRoute
-  '/api/export': typeof ApiExportRoute
-  '/api/history': typeof ApiHistoryRoute
-  '/api/import': typeof ApiImportRoute
-  '/api/settings': typeof ApiSettingsRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/export': typeof AuthenticatedExportRoute
+  '/history': typeof AuthenticatedHistoryRoute
+  '/import': typeof AuthenticatedImportRoute
+  '/settings': typeof AuthenticatedSettingsRoute
   '/auth/$path': typeof AuthPathRoute
-  '/projects/$id': typeof ProjectsIdRoute
-  '/projects/new': typeof ProjectsNewRoute
   '/s/$token': typeof STokenRoute
-  '/shows/$id': typeof ShowsIdRoute
-  '/shows/new': typeof ShowsNewRoute
-  '/songs/$id': typeof SongsIdRoute
-  '/songs/new': typeof SongsNewRoute
-  '/projects/': typeof ProjectsIndexRoute
-  '/shows/': typeof ShowsIndexRoute
-  '/songs/': typeof SongsIndexRoute
+  '/account/$path': typeof AuthenticatedAccountPathRoute
+  '/projects/$id': typeof AuthenticatedProjectsIdRoute
+  '/projects/new': typeof AuthenticatedProjectsNewRoute
+  '/shows/$id': typeof AuthenticatedShowsIdRoute
+  '/shows/new': typeof AuthenticatedShowsNewRoute
+  '/songs/$id': typeof AuthenticatedSongsIdRoute
+  '/songs/new': typeof AuthenticatedSongsNewRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/api/shows/$id': typeof ApiShowsIdRouteWithChildren
-  '/api/songs/$id': typeof ApiSongsIdRouteWithChildren
-  '/api/shows/': typeof ApiShowsIndexRoute
-  '/api/songs/': typeof ApiSongsIndexRoute
-  '/api/public/songs/$token': typeof ApiPublicSongsTokenRoute
-  '/api/shows/$id/history': typeof ApiShowsIdHistoryRoute
-  '/api/songs/$id/history': typeof ApiSongsIdHistoryRoute
-  '/api/songs/$id/share': typeof ApiSongsIdShareRoute
+  '/projects/': typeof AuthenticatedProjectsIndexRoute
+  '/shows/': typeof AuthenticatedShowsIndexRoute
+  '/songs/': typeof AuthenticatedSongsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/export': typeof ExportRoute
-  '/history': typeof HistoryRoute
-  '/import': typeof ImportRoute
-  '/settings': typeof SettingsRoute
-  '/account/$path': typeof AccountPathRoute
-  '/api/export': typeof ApiExportRoute
-  '/api/history': typeof ApiHistoryRoute
-  '/api/import': typeof ApiImportRoute
-  '/api/settings': typeof ApiSettingsRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/export': typeof AuthenticatedExportRoute
+  '/history': typeof AuthenticatedHistoryRoute
+  '/import': typeof AuthenticatedImportRoute
+  '/settings': typeof AuthenticatedSettingsRoute
   '/auth/$path': typeof AuthPathRoute
-  '/projects/$id': typeof ProjectsIdRoute
-  '/projects/new': typeof ProjectsNewRoute
   '/s/$token': typeof STokenRoute
-  '/shows/$id': typeof ShowsIdRoute
-  '/shows/new': typeof ShowsNewRoute
-  '/songs/$id': typeof SongsIdRoute
-  '/songs/new': typeof SongsNewRoute
-  '/projects': typeof ProjectsIndexRoute
-  '/shows': typeof ShowsIndexRoute
-  '/songs': typeof SongsIndexRoute
+  '/account/$path': typeof AuthenticatedAccountPathRoute
+  '/projects/$id': typeof AuthenticatedProjectsIdRoute
+  '/projects/new': typeof AuthenticatedProjectsNewRoute
+  '/shows/$id': typeof AuthenticatedShowsIdRoute
+  '/shows/new': typeof AuthenticatedShowsNewRoute
+  '/songs/$id': typeof AuthenticatedSongsIdRoute
+  '/songs/new': typeof AuthenticatedSongsNewRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/api/shows/$id': typeof ApiShowsIdRouteWithChildren
-  '/api/songs/$id': typeof ApiSongsIdRouteWithChildren
-  '/api/shows': typeof ApiShowsIndexRoute
-  '/api/songs': typeof ApiSongsIndexRoute
-  '/api/public/songs/$token': typeof ApiPublicSongsTokenRoute
-  '/api/shows/$id/history': typeof ApiShowsIdHistoryRoute
-  '/api/songs/$id/history': typeof ApiSongsIdHistoryRoute
-  '/api/songs/$id/share': typeof ApiSongsIdShareRoute
+  '/projects': typeof AuthenticatedProjectsIndexRoute
+  '/shows': typeof AuthenticatedShowsIndexRoute
+  '/songs': typeof AuthenticatedSongsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/_authenticated': typeof AuthenticatedRoute
   '/': typeof IndexRoute
-  '/export': typeof ExportRoute
-  '/history': typeof HistoryRoute
-  '/import': typeof ImportRoute
-  '/settings': typeof SettingsRoute
-  '/account/$path': typeof AccountPathRoute
-  '/api/export': typeof ApiExportRoute
-  '/api/history': typeof ApiHistoryRoute
-  '/api/import': typeof ApiImportRoute
-  '/api/settings': typeof ApiSettingsRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/export': typeof AuthenticatedExportRoute
+  '/_authenticated/history': typeof AuthenticatedHistoryRoute
+  '/_authenticated/import': typeof AuthenticatedImportRoute
+  '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/auth/$path': typeof AuthPathRoute
-  '/projects/$id': typeof ProjectsIdRoute
-  '/projects/new': typeof ProjectsNewRoute
   '/s/$token': typeof STokenRoute
-  '/shows/$id': typeof ShowsIdRoute
-  '/shows/new': typeof ShowsNewRoute
-  '/songs/$id': typeof SongsIdRoute
-  '/songs/new': typeof SongsNewRoute
-  '/projects/': typeof ProjectsIndexRoute
-  '/shows/': typeof ShowsIndexRoute
-  '/songs/': typeof SongsIndexRoute
+  '/_authenticated/account/$path': typeof AuthenticatedAccountPathRoute
+  '/_authenticated/projects/$id': typeof AuthenticatedProjectsIdRoute
+  '/_authenticated/projects/new': typeof AuthenticatedProjectsNewRoute
+  '/_authenticated/shows/$id': typeof AuthenticatedShowsIdRoute
+  '/_authenticated/shows/new': typeof AuthenticatedShowsNewRoute
+  '/_authenticated/songs/$id': typeof AuthenticatedSongsIdRoute
+  '/_authenticated/songs/new': typeof AuthenticatedSongsNewRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/api/shows/$id': typeof ApiShowsIdRouteWithChildren
-  '/api/songs/$id': typeof ApiSongsIdRouteWithChildren
-  '/api/shows/': typeof ApiShowsIndexRoute
-  '/api/songs/': typeof ApiSongsIndexRoute
-  '/api/public/songs/$token': typeof ApiPublicSongsTokenRoute
-  '/api/shows/$id/history': typeof ApiShowsIdHistoryRoute
-  '/api/songs/$id/history': typeof ApiSongsIdHistoryRoute
-  '/api/songs/$id/share': typeof ApiSongsIdShareRoute
+  '/_authenticated/projects/': typeof AuthenticatedProjectsIndexRoute
+  '/_authenticated/shows/': typeof AuthenticatedShowsIndexRoute
+  '/_authenticated/songs/': typeof AuthenticatedSongsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/dashboard'
     | '/export'
     | '/history'
     | '/import'
     | '/settings'
-    | '/account/$path'
-    | '/api/export'
-    | '/api/history'
-    | '/api/import'
-    | '/api/settings'
     | '/auth/$path'
+    | '/s/$token'
+    | '/account/$path'
     | '/projects/$id'
     | '/projects/new'
-    | '/s/$token'
     | '/shows/$id'
     | '/shows/new'
     | '/songs/$id'
     | '/songs/new'
+    | '/api/auth/$'
     | '/projects/'
     | '/shows/'
     | '/songs/'
-    | '/api/auth/$'
-    | '/api/shows/$id'
-    | '/api/songs/$id'
-    | '/api/shows/'
-    | '/api/songs/'
-    | '/api/public/songs/$token'
-    | '/api/shows/$id/history'
-    | '/api/songs/$id/history'
-    | '/api/songs/$id/share'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/dashboard'
     | '/export'
     | '/history'
     | '/import'
     | '/settings'
-    | '/account/$path'
-    | '/api/export'
-    | '/api/history'
-    | '/api/import'
-    | '/api/settings'
     | '/auth/$path'
+    | '/s/$token'
+    | '/account/$path'
     | '/projects/$id'
     | '/projects/new'
-    | '/s/$token'
     | '/shows/$id'
     | '/shows/new'
     | '/songs/$id'
     | '/songs/new'
+    | '/api/auth/$'
     | '/projects'
     | '/shows'
     | '/songs'
-    | '/api/auth/$'
-    | '/api/shows/$id'
-    | '/api/songs/$id'
-    | '/api/shows'
-    | '/api/songs'
-    | '/api/public/songs/$token'
-    | '/api/shows/$id/history'
-    | '/api/songs/$id/history'
-    | '/api/songs/$id/share'
   id:
     | '__root__'
-    | '/_authenticated'
     | '/'
-    | '/export'
-    | '/history'
-    | '/import'
-    | '/settings'
-    | '/account/$path'
-    | '/api/export'
-    | '/api/history'
-    | '/api/import'
-    | '/api/settings'
+    | '/_authenticated'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/export'
+    | '/_authenticated/history'
+    | '/_authenticated/import'
+    | '/_authenticated/settings'
     | '/auth/$path'
-    | '/projects/$id'
-    | '/projects/new'
     | '/s/$token'
-    | '/shows/$id'
-    | '/shows/new'
-    | '/songs/$id'
-    | '/songs/new'
-    | '/projects/'
-    | '/shows/'
-    | '/songs/'
+    | '/_authenticated/account/$path'
+    | '/_authenticated/projects/$id'
+    | '/_authenticated/projects/new'
+    | '/_authenticated/shows/$id'
+    | '/_authenticated/shows/new'
+    | '/_authenticated/songs/$id'
+    | '/_authenticated/songs/new'
     | '/api/auth/$'
-    | '/api/shows/$id'
-    | '/api/songs/$id'
-    | '/api/shows/'
-    | '/api/songs/'
-    | '/api/public/songs/$token'
-    | '/api/shows/$id/history'
-    | '/api/songs/$id/history'
-    | '/api/songs/$id/share'
+    | '/_authenticated/projects/'
+    | '/_authenticated/shows/'
+    | '/_authenticated/songs/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  AuthenticatedRoute: typeof AuthenticatedRoute
   IndexRoute: typeof IndexRoute
-  ExportRoute: typeof ExportRoute
-  HistoryRoute: typeof HistoryRoute
-  ImportRoute: typeof ImportRoute
-  SettingsRoute: typeof SettingsRoute
-  AccountPathRoute: typeof AccountPathRoute
-  ApiExportRoute: typeof ApiExportRoute
-  ApiHistoryRoute: typeof ApiHistoryRoute
-  ApiImportRoute: typeof ApiImportRoute
-  ApiSettingsRoute: typeof ApiSettingsRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   AuthPathRoute: typeof AuthPathRoute
-  ProjectsIdRoute: typeof ProjectsIdRoute
-  ProjectsNewRoute: typeof ProjectsNewRoute
   STokenRoute: typeof STokenRoute
-  ShowsIdRoute: typeof ShowsIdRoute
-  ShowsNewRoute: typeof ShowsNewRoute
-  SongsIdRoute: typeof SongsIdRoute
-  SongsNewRoute: typeof SongsNewRoute
-  ProjectsIndexRoute: typeof ProjectsIndexRoute
-  ShowsIndexRoute: typeof ShowsIndexRoute
-  SongsIndexRoute: typeof SongsIndexRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
-  ApiShowsIdRoute: typeof ApiShowsIdRouteWithChildren
-  ApiSongsIdRoute: typeof ApiSongsIdRouteWithChildren
-  ApiShowsIndexRoute: typeof ApiShowsIndexRoute
-  ApiSongsIndexRoute: typeof ApiSongsIndexRoute
-  ApiPublicSongsTokenRoute: typeof ApiPublicSongsTokenRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/_authenticated': {
       id: '/_authenticated'
-      path: '/'
+      path: ''
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/settings': {
-      id: '/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof SettingsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/import': {
-      id: '/import'
-      path: '/import'
-      fullPath: '/import'
-      preLoaderRoute: typeof ImportRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/history': {
-      id: '/history'
-      path: '/history'
-      fullPath: '/history'
-      preLoaderRoute: typeof HistoryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/export': {
-      id: '/export'
-      path: '/export'
-      fullPath: '/export'
-      preLoaderRoute: typeof ExportRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -471,74 +289,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/songs/': {
-      id: '/songs/'
-      path: '/songs'
-      fullPath: '/songs/'
-      preLoaderRoute: typeof SongsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/shows/': {
-      id: '/shows/'
-      path: '/shows'
-      fullPath: '/shows/'
-      preLoaderRoute: typeof ShowsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/projects/': {
-      id: '/projects/'
-      path: '/projects'
-      fullPath: '/projects/'
-      preLoaderRoute: typeof ProjectsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/songs/new': {
-      id: '/songs/new'
-      path: '/songs/new'
-      fullPath: '/songs/new'
-      preLoaderRoute: typeof SongsNewRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/songs/$id': {
-      id: '/songs/$id'
-      path: '/songs/$id'
-      fullPath: '/songs/$id'
-      preLoaderRoute: typeof SongsIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/shows/new': {
-      id: '/shows/new'
-      path: '/shows/new'
-      fullPath: '/shows/new'
-      preLoaderRoute: typeof ShowsNewRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/shows/$id': {
-      id: '/shows/$id'
-      path: '/shows/$id'
-      fullPath: '/shows/$id'
-      preLoaderRoute: typeof ShowsIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/s/$token': {
       id: '/s/$token'
       path: '/s/$token'
       fullPath: '/s/$token'
       preLoaderRoute: typeof STokenRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/projects/new': {
-      id: '/projects/new'
-      path: '/projects/new'
-      fullPath: '/projects/new'
-      preLoaderRoute: typeof ProjectsNewRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/projects/$id': {
-      id: '/projects/$id'
-      path: '/projects/$id'
-      fullPath: '/projects/$id'
-      preLoaderRoute: typeof ProjectsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth/$path': {
@@ -548,68 +303,61 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthPathRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/settings': {
-      id: '/api/settings'
-      path: '/api/settings'
-      fullPath: '/api/settings'
-      preLoaderRoute: typeof ApiSettingsRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/settings': {
+      id: '/_authenticated/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthenticatedSettingsRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/api/import': {
-      id: '/api/import'
-      path: '/api/import'
-      fullPath: '/api/import'
-      preLoaderRoute: typeof ApiImportRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/import': {
+      id: '/_authenticated/import'
+      path: '/import'
+      fullPath: '/import'
+      preLoaderRoute: typeof AuthenticatedImportRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/api/history': {
-      id: '/api/history'
-      path: '/api/history'
-      fullPath: '/api/history'
-      preLoaderRoute: typeof ApiHistoryRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/history': {
+      id: '/_authenticated/history'
+      path: '/history'
+      fullPath: '/history'
+      preLoaderRoute: typeof AuthenticatedHistoryRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/api/export': {
-      id: '/api/export'
-      path: '/api/export'
-      fullPath: '/api/export'
-      preLoaderRoute: typeof ApiExportRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/export': {
+      id: '/_authenticated/export'
+      path: '/export'
+      fullPath: '/export'
+      preLoaderRoute: typeof AuthenticatedExportRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/account/$path': {
-      id: '/account/$path'
-      path: '/account/$path'
-      fullPath: '/account/$path'
-      preLoaderRoute: typeof AccountPathRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/api/songs/': {
-      id: '/api/songs/'
-      path: '/api/songs'
-      fullPath: '/api/songs/'
-      preLoaderRoute: typeof ApiSongsIndexRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/songs/': {
+      id: '/_authenticated/songs/'
+      path: '/songs'
+      fullPath: '/songs/'
+      preLoaderRoute: typeof AuthenticatedSongsIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/api/shows/': {
-      id: '/api/shows/'
-      path: '/api/shows'
-      fullPath: '/api/shows/'
-      preLoaderRoute: typeof ApiShowsIndexRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/shows/': {
+      id: '/_authenticated/shows/'
+      path: '/shows'
+      fullPath: '/shows/'
+      preLoaderRoute: typeof AuthenticatedShowsIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/api/songs/$id': {
-      id: '/api/songs/$id'
-      path: '/api/songs/$id'
-      fullPath: '/api/songs/$id'
-      preLoaderRoute: typeof ApiSongsIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/shows/$id': {
-      id: '/api/shows/$id'
-      path: '/api/shows/$id'
-      fullPath: '/api/shows/$id'
-      preLoaderRoute: typeof ApiShowsIdRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/projects/': {
+      id: '/_authenticated/projects/'
+      path: '/projects'
+      fullPath: '/projects/'
+      preLoaderRoute: typeof AuthenticatedProjectsIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
     '/api/auth/$': {
       id: '/api/auth/$'
@@ -618,92 +366,104 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/songs/$id/share': {
-      id: '/api/songs/$id/share'
-      path: '/share'
-      fullPath: '/api/songs/$id/share'
-      preLoaderRoute: typeof ApiSongsIdShareRouteImport
-      parentRoute: typeof ApiSongsIdRoute
+    '/_authenticated/songs/new': {
+      id: '/_authenticated/songs/new'
+      path: '/songs/new'
+      fullPath: '/songs/new'
+      preLoaderRoute: typeof AuthenticatedSongsNewRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/api/songs/$id/history': {
-      id: '/api/songs/$id/history'
-      path: '/history'
-      fullPath: '/api/songs/$id/history'
-      preLoaderRoute: typeof ApiSongsIdHistoryRouteImport
-      parentRoute: typeof ApiSongsIdRoute
+    '/_authenticated/songs/$id': {
+      id: '/_authenticated/songs/$id'
+      path: '/songs/$id'
+      fullPath: '/songs/$id'
+      preLoaderRoute: typeof AuthenticatedSongsIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/api/shows/$id/history': {
-      id: '/api/shows/$id/history'
-      path: '/history'
-      fullPath: '/api/shows/$id/history'
-      preLoaderRoute: typeof ApiShowsIdHistoryRouteImport
-      parentRoute: typeof ApiShowsIdRoute
+    '/_authenticated/shows/new': {
+      id: '/_authenticated/shows/new'
+      path: '/shows/new'
+      fullPath: '/shows/new'
+      preLoaderRoute: typeof AuthenticatedShowsNewRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/api/public/songs/$token': {
-      id: '/api/public/songs/$token'
-      path: '/api/public/songs/$token'
-      fullPath: '/api/public/songs/$token'
-      preLoaderRoute: typeof ApiPublicSongsTokenRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/shows/$id': {
+      id: '/_authenticated/shows/$id'
+      path: '/shows/$id'
+      fullPath: '/shows/$id'
+      preLoaderRoute: typeof AuthenticatedShowsIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/projects/new': {
+      id: '/_authenticated/projects/new'
+      path: '/projects/new'
+      fullPath: '/projects/new'
+      preLoaderRoute: typeof AuthenticatedProjectsNewRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/projects/$id': {
+      id: '/_authenticated/projects/$id'
+      path: '/projects/$id'
+      fullPath: '/projects/$id'
+      preLoaderRoute: typeof AuthenticatedProjectsIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/account/$path': {
+      id: '/_authenticated/account/$path'
+      path: '/account/$path'
+      fullPath: '/account/$path'
+      preLoaderRoute: typeof AuthenticatedAccountPathRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
   }
 }
 
-interface ApiShowsIdRouteChildren {
-  ApiShowsIdHistoryRoute: typeof ApiShowsIdHistoryRoute
+interface AuthenticatedRouteChildren {
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedExportRoute: typeof AuthenticatedExportRoute
+  AuthenticatedHistoryRoute: typeof AuthenticatedHistoryRoute
+  AuthenticatedImportRoute: typeof AuthenticatedImportRoute
+  AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
+  AuthenticatedAccountPathRoute: typeof AuthenticatedAccountPathRoute
+  AuthenticatedProjectsIdRoute: typeof AuthenticatedProjectsIdRoute
+  AuthenticatedProjectsNewRoute: typeof AuthenticatedProjectsNewRoute
+  AuthenticatedShowsIdRoute: typeof AuthenticatedShowsIdRoute
+  AuthenticatedShowsNewRoute: typeof AuthenticatedShowsNewRoute
+  AuthenticatedSongsIdRoute: typeof AuthenticatedSongsIdRoute
+  AuthenticatedSongsNewRoute: typeof AuthenticatedSongsNewRoute
+  AuthenticatedProjectsIndexRoute: typeof AuthenticatedProjectsIndexRoute
+  AuthenticatedShowsIndexRoute: typeof AuthenticatedShowsIndexRoute
+  AuthenticatedSongsIndexRoute: typeof AuthenticatedSongsIndexRoute
 }
 
-const ApiShowsIdRouteChildren: ApiShowsIdRouteChildren = {
-  ApiShowsIdHistoryRoute: ApiShowsIdHistoryRoute,
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedExportRoute: AuthenticatedExportRoute,
+  AuthenticatedHistoryRoute: AuthenticatedHistoryRoute,
+  AuthenticatedImportRoute: AuthenticatedImportRoute,
+  AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
+  AuthenticatedAccountPathRoute: AuthenticatedAccountPathRoute,
+  AuthenticatedProjectsIdRoute: AuthenticatedProjectsIdRoute,
+  AuthenticatedProjectsNewRoute: AuthenticatedProjectsNewRoute,
+  AuthenticatedShowsIdRoute: AuthenticatedShowsIdRoute,
+  AuthenticatedShowsNewRoute: AuthenticatedShowsNewRoute,
+  AuthenticatedSongsIdRoute: AuthenticatedSongsIdRoute,
+  AuthenticatedSongsNewRoute: AuthenticatedSongsNewRoute,
+  AuthenticatedProjectsIndexRoute: AuthenticatedProjectsIndexRoute,
+  AuthenticatedShowsIndexRoute: AuthenticatedShowsIndexRoute,
+  AuthenticatedSongsIndexRoute: AuthenticatedSongsIndexRoute,
 }
 
-const ApiShowsIdRouteWithChildren = ApiShowsIdRoute._addFileChildren(
-  ApiShowsIdRouteChildren,
-)
-
-interface ApiSongsIdRouteChildren {
-  ApiSongsIdHistoryRoute: typeof ApiSongsIdHistoryRoute
-  ApiSongsIdShareRoute: typeof ApiSongsIdShareRoute
-}
-
-const ApiSongsIdRouteChildren: ApiSongsIdRouteChildren = {
-  ApiSongsIdHistoryRoute: ApiSongsIdHistoryRoute,
-  ApiSongsIdShareRoute: ApiSongsIdShareRoute,
-}
-
-const ApiSongsIdRouteWithChildren = ApiSongsIdRoute._addFileChildren(
-  ApiSongsIdRouteChildren,
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
 )
 
 const rootRouteChildren: RootRouteChildren = {
-  AuthenticatedRoute: AuthenticatedRoute,
   IndexRoute: IndexRoute,
-  ExportRoute: ExportRoute,
-  HistoryRoute: HistoryRoute,
-  ImportRoute: ImportRoute,
-  SettingsRoute: SettingsRoute,
-  AccountPathRoute: AccountPathRoute,
-  ApiExportRoute: ApiExportRoute,
-  ApiHistoryRoute: ApiHistoryRoute,
-  ApiImportRoute: ApiImportRoute,
-  ApiSettingsRoute: ApiSettingsRoute,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AuthPathRoute: AuthPathRoute,
-  ProjectsIdRoute: ProjectsIdRoute,
-  ProjectsNewRoute: ProjectsNewRoute,
   STokenRoute: STokenRoute,
-  ShowsIdRoute: ShowsIdRoute,
-  ShowsNewRoute: ShowsNewRoute,
-  SongsIdRoute: SongsIdRoute,
-  SongsNewRoute: SongsNewRoute,
-  ProjectsIndexRoute: ProjectsIndexRoute,
-  ShowsIndexRoute: ShowsIndexRoute,
-  SongsIndexRoute: SongsIndexRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
-  ApiShowsIdRoute: ApiShowsIdRouteWithChildren,
-  ApiSongsIdRoute: ApiSongsIdRouteWithChildren,
-  ApiShowsIndexRoute: ApiShowsIndexRoute,
-  ApiSongsIndexRoute: ApiSongsIndexRoute,
-  ApiPublicSongsTokenRoute: ApiPublicSongsTokenRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

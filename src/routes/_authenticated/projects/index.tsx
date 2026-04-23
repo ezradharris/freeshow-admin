@@ -10,7 +10,7 @@ type Project = {
     updatedAt: Date
 }
 
-export const Route = createFileRoute("/_authenticated/projects/" as any)({
+export const Route = createFileRoute("/_authenticated/projects/")({
     loader: async () => {
         const projects = await getShows({ data: { type: "project" } })
         return { projects }

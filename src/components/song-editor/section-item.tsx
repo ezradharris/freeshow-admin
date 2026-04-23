@@ -65,7 +65,7 @@ export function SectionItem({ section, index, onChange, onRemove, settings, drag
                     placeholder="Label (e.g. Verse 1)"
                     className="flex-1 h-8 rounded-md border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                 />
-                <Button variant="destructive" size="sm" onClick={onRemove}>Remove</Button>
+                <Button variant="ghost" size="sm" onClick={onRemove} className="text-muted-foreground hover:text-destructive">Remove</Button>
             </div>
 
             <textarea

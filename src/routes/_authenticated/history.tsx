@@ -14,7 +14,7 @@ type HistoryEntry = {
     changedAt: Date
 }
 
-export const Route = createFileRoute("/_authenticated/history" as any)({
+export const Route = createFileRoute("/_authenticated/history")({
     loader: async () => {
         const entries = await getHistory({ data: { limit: 200 } })
         return { entries: entries as HistoryEntry[] }

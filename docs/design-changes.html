@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FreeShow Admin — Design Changes</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; }
+
+  :root {
+    --primary: oklch(0.46 0.17 160);
+    --bg: oklch(0.99 0.003 160);
+    --fg: oklch(0.14 0.012 160);
+    --muted: oklch(0.50 0.012 160);
+    --border: oklch(0.89 0.009 160);
+    --surface: oklch(0.96 0.007 160);
+    --green: oklch(0.54 0.17 160);
+    --red: oklch(0.577 0.245 27.325);
+    --amber: oklch(0.75 0.17 60);
+  }
+
+  html { font-family: system-ui, sans-serif; background: var(--bg); color: var(--fg); }
+  body { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+
+  h1 { font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; color: var(--primary); margin-bottom: 6px; }
+  h2 { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.01em; margin: 40px 0 12px; }
+  h3 { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 20px 0 8px; }
+
+  p { font-size: 0.9rem; line-height: 1.65; color: var(--muted); max-width: 68ch; }
+  .subtitle { font-size: 0.85rem; color: var(--muted); margin-bottom: 32px; }
+
+  .section { border-top: 1px solid var(--border); padding-top: 32px; }
+
+  ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+  li { font-size: 0.875rem; line-height: 1.5; display: flex; gap: 10px; align-items: baseline; }
+  li::before { content: "→"; color: var(--primary); font-weight: 700; flex-shrink: 0; }
+
+  .tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 2px 7px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+  .tag-fix { background: oklch(0.93 0.009 160); color: var(--primary); }
+  .tag-new { background: oklch(0.90 0.13 160 / 0.15); color: var(--green); border: 1px solid oklch(0.90 0.13 160 / 0.3); }
+  .tag-remove { background: oklch(0.95 0.04 27); color: var(--red); }
+  .tag-improve { background: oklch(0.96 0.04 60); color: oklch(0.35 0.1 60); }
+
+  .change-row {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .change-row:last-child { border-bottom: none; }
+  .change-file { font-family: monospace; font-size: 0.8rem; color: var(--muted); flex-shrink: 0; min-width: 0; }
+  .change-desc { flex: 1; }
+
+  .color-swatch {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    vertical-align: middle;
+    margin-right: 6px;
+    border: 1px solid var(--border);
+  }
+
+  .palette-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 12px 0;
+  }
+  .swatch-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: white;
+  }
+  .swatch-block {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    border: 1px solid rgba(0,0,0,0.08);
+  }
+  .swatch-label { font-weight: 600; font-size: 0.78rem; }
+  .swatch-value { color: var(--muted); font-family: monospace; font-size: 0.72rem; }
+
+  .files-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 8px;
+    margin: 12px 0;
+  }
+  .file-chip {
+    font-family: monospace;
+    font-size: 0.78rem;
+    padding: 6px 10px;
+    border-radius: 4px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--fg);
+  }
+
+  .principle-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+  }
+  .principle-title { font-weight: 700; font-size: 0.875rem; margin-bottom: 4px; }
+  .principle-body { font-size: 0.825rem; color: var(--muted); line-height: 1.5; }
+
+  .before-after {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 12px 0;
+  }
+  @media (max-width: 600px) { .before-after { grid-template-columns: 1fr; } }
+  .ba-card { border: 1px solid var(--border); border-radius: 6px; padding: 14px; }
+  .ba-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 8px; }
+  .ba-before .ba-label { color: var(--red); }
+  .ba-after .ba-label { color: var(--green); }
+  .ba-code { font-family: monospace; font-size: 0.78rem; color: var(--fg); line-height: 1.6; white-space: pre-wrap; }
+</style>
+</head>
+<body>
+
+<h1>FreeShow Admin — Design Changes</h1>
+<p class="subtitle">Applied 2026-04-22 · <code>feature/freeshow-admin</code> worktree · impeccable skill</p>
+
+<!-- OVERVIEW -->
+<div class="section">
+  <h2>What changed and why</h2>
+  <p>The original UI was functional but had zero brand identity — achromatic palette, generic card patterns, and native <code>alert()</code> dialogs. This pass aligned the UI to the design context: Blunt. Poppy. Self-aware. Inspired by Trainline's direct, colorful, unafraid aesthetic.</p>
+</div>
+
+<!-- DESIGN PRINCIPLES -->
+<div class="section">
+  <h2>Design principles applied</h2>
+  <div class="principle-card">
+    <div class="principle-title">Get out of the way</div>
+    <div class="principle-body">Dashboard removed the "hero metric" stat-card pattern. Content counts are now a single subtitle line. Less ceremony, same information.</div>
+  </div>
+  <div class="principle-card">
+    <div class="principle-title">Earn the color</div>
+    <div class="principle-body">The new teal-green primary (<code>oklch(0.46 0.17 160)</code>) only appears on active nav items, primary buttons, links, and interactive focus rings. Nowhere decorative.</div>
+  </div>
+  <div class="principle-card">
+    <div class="principle-title">Speak plainly</div>
+    <div class="principle-body">Copy cleaned up: "History Timeline" → "History", "Import FreeShow Files" → "Import", "Save & Create" kept (descriptive). Empty states now have personality without being cutesy.</div>
+  </div>
+  <div class="principle-card">
+    <div class="principle-title">Small corners, big power</div>
+    <div class="principle-body">Sonner toast replaces all <code>alert()</code> calls. Errors surface immediately without blocking. Success toasts confirm saves without inline state clutter.</div>
+  </div>
+  <div class="principle-card">
+    <div class="principle-title">Auth lives separately</div>
+    <div class="principle-body">The nav sidebar now hides on <code>/auth/*</code> routes. The main layout centers the auth view. A small brand mark identifies the app without redundant nav chrome.</div>
+  </div>
+</div>
+
+<!-- COLOR PALETTE -->
+<div class="section">
+  <h2>Color palette</h2>
+  <p>Migrated from achromatic (0 chroma) to teal-tinted OKLCH. All neutrals tinted toward hue 160. Chroma reduces at extremes to avoid garish light/dark tones.</p>
+
+  <div class="palette-row">
+    <div class="swatch-item">
+      <div class="swatch-block" style="background: oklch(0.46 0.17 160)"></div>
+      <div>
+        <div class="swatch-label">Primary</div>
+        <div class="swatch-value">oklch(0.46 0.17 160)</div>
+      </div>
+    </div>
+    <div class="swatch-item">
+      <div class="swatch-block" style="background: oklch(0.99 0.003 160)"></div>
+      <div>
+        <div class="swatch-label">Background</div>
+        <div class="swatch-value">oklch(0.99 0.003 160)</div>
+      </div>
+    </div>
+    <div class="swatch-item">
+      <div class="swatch-block" style="background: oklch(0.14 0.012 160)"></div>
+      <div>
+        <div class="swatch-label">Foreground</div>
+        <div class="swatch-value">oklch(0.14 0.012 160)</div>
+      </div>
+    </div>
+    <div class="swatch-item">
+      <div class="swatch-block" style="background: oklch(0.95 0.006 160)"></div>
+      <div>
+        <div class="swatch-label">Muted</div>
+        <div class="swatch-value">oklch(0.95 0.006 160)</div>
+      </div>
+    </div>
+    <div class="swatch-item">
+      <div class="swatch-block" style="background: oklch(0.89 0.009 160)"></div>
+      <div>
+        <div class="swatch-label">Border</div>
+        <div class="swatch-value">oklch(0.89 0.009 160)</div>
+      </div>
+    </div>
+    <div class="swatch-item">
+      <div class="swatch-block" style="background: oklch(0.577 0.245 27.325)"></div>
+      <div>
+        <div class="swatch-label">Destructive</div>
+        <div class="swatch-value">oklch(0.577 0.245 27.3)</div>
+      </div>
+    </div>
+    <div class="swatch-item">
+      <div class="swatch-block" style="background: oklch(0.72 0.13 160)"></div>
+      <div>
+        <div class="swatch-label">Primary (dark)</div>
+        <div class="swatch-value">oklch(0.72 0.13 160)</div>
+      </div>
+    </div>
+    <div class="swatch-item">
+      <div class="swatch-block" style="background: oklch(0.13 0.018 160)"></div>
+      <div>
+        <div class="swatch-label">Background (dark)</div>
+        <div class="swatch-value">oklch(0.13 0.018 160)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="before-after">
+    <div class="ba-card ba-before">
+      <div class="ba-label">Before</div>
+      <div class="ba-code">--primary: oklch(0.205 0 0)
+--background: oklch(1 0 0)
+--foreground: oklch(0.145 0 0)
+--border: oklch(0.922 0 0)
+/* 0 chroma throughout */
+/* pure white/black */</div>
+    </div>
+    <div class="ba-card ba-after">
+      <div class="ba-label">After</div>
+      <div class="ba-code">--primary: oklch(0.46 0.17 160)
+--background: oklch(0.99 0.003 160)
+--foreground: oklch(0.14 0.012 160)
+--border: oklch(0.89 0.009 160)
+/* all neutrals tinted hue 160 */
+/* no pure black/white */</div>
+    </div>
+  </div>
+</div>
+
+<!-- TYPOGRAPHY -->
+<div class="section">
+  <h2>Typography</h2>
+  <p>Replaced system default stack with Barlow Condensed (headings) + Barlow (body). Neither appears on the impeccable ban list. Barlow Condensed is blunt and functional — deliberately non-precious, slightly military without being cold.</p>
+
+  <ul style="margin-top: 12px;">
+    <li><strong>Barlow Condensed 700</strong> — page headings (h1, h2, h3, h4 via CSS base layer)</li>
+    <li><strong>Barlow 400/500</strong> — body text, labels, inputs</li>
+    <li>Fonts loaded via Google Fonts preconnect in <code>__root.tsx</code> head config</li>
+    <li>Fixed rem scale for app UI (no fluid clamp — correct for dashboards)</li>
+    <li>All h1 headings at <code>text-3xl font-bold tracking-tight</code></li>
+  </ul>
+</div>
+
+<!-- AUTH ISOLATION -->
+<div class="section">
+  <h2>Auth route isolation</h2>
+  <p>Auth pages now render without the nav sidebar. Two changes coordinated:</p>
+
+  <div class="before-after">
+    <div class="ba-card ba-before">
+      <div class="ba-label">Before</div>
+      <div class="ba-code">// __root.tsx
+const isPublicShare =
+  pathname.startsWith("/s/")
+// Only /s/* routes hidden nav
+
+// nav-sidebar.tsx
+if (pathname.startsWith("/s/"))
+  return null
+// Auth pages got full sidebar</div>
+    </div>
+    <div class="ba-card ba-after">
+      <div class="ba-label">After</div>
+      <div class="ba-code">// __root.tsx
+const isAuthRoute =
+  pathname.startsWith("/auth/")
+// Auth routes: centered flex main
+
+// nav-sidebar.tsx
+if (pathname.startsWith("/s/") ||
+    pathname.startsWith("/auth/"))
+  return null
+// Clean fullscreen auth experience</div>
+    </div>
+  </div>
+</div>
+
+<!-- COMPONENT CHANGES -->
+<div class="section">
+  <h2>Component &amp; route changes</h2>
+
+  <h3>Dashboard (index.tsx)</h3>
+  <div class="change-row"><span class="tag tag-remove">Removed</span><span class="change-desc">StatCard hero pattern — big number / small label / icon — banned by impeccable</span></div>
+  <div class="change-row"><span class="tag tag-new">New</span><span class="change-desc">Inline stats summary as subtitle: "42 songs · 8 shows · 3 projects" with hover-linked counts</span></div>
+  <div class="change-row"><span class="tag tag-fix">Fix</span><span class="change-desc">Recent activity uses <code>divide-y</code> list rows instead of bordered cards-within-the-page</span></div>
+  <div class="change-row"><span class="tag tag-improve">Improved</span><span class="change-desc">Quick actions integrated into header row, not a separate labeled section</span></div>
+
+  <h3>List pages (songs, shows, projects)</h3>
+  <div class="change-row"><span class="tag tag-remove">Removed</span><span class="change-desc">Identical <code>border rounded-lg bg-card hover:bg-accent</code> card-per-item pattern</span></div>
+  <div class="change-row"><span class="tag tag-new">New</span><span class="change-desc"><code>divide-y divide-border</code> list with <code>hover:bg-muted/40</code> rows and group-hover primary color on title</span></div>
+  <div class="change-row"><span class="tag tag-improve">Improved</span><span class="change-desc">Empty states have personality: "Drop some lyrics in — they won't add themselves."</span></div>
+
+  <h3>Import page</h3>
+  <div class="change-row"><span class="tag tag-remove">Removed</span><span class="change-desc">Status-colored card backgrounds (<code>border-green-500/30 bg-green-500/5</code> etc.) — banned pattern</span></div>
+  <div class="change-row"><span class="tag tag-new">New</span><span class="change-desc">Icon + text color for status (Check/X/Minus icons, primary/destructive/muted text)</span></div>
+  <div class="change-row"><span class="tag tag-improve">Improved</span><span class="change-desc">Results summary line: "3 imported, 1 skipped, 0 failed"</span></div>
+
+  <h3>Export page</h3>
+  <div class="change-row"><span class="tag tag-fix">Fix</span><span class="change-desc">Section headers use <code>bg-muted/30</code> surface instead of plain border</span></div>
+  <div class="change-row"><span class="tag tag-fix">Fix</span><span class="change-desc">Checkbox items use <code>divide-y</code> in bordered container, not <code>space-y-2</code> floaters</span></div>
+
+  <h3>History page</h3>
+  <div class="change-row"><span class="tag tag-remove">Removed</span><span class="change-desc">Hardcoded <code>bg-blue-100 text-blue-800</code> type badges — replaced with uppercase tracking label</span></div>
+  <div class="change-row"><span class="tag tag-remove">Removed</span><span class="change-desc"><code>restoreSuccess</code> state and inline green "Restored successfully" text</span></div>
+  <div class="change-row"><span class="tag tag-new">New</span><span class="change-desc">Modal copy rewritten: "Restore this version?" with clear consequence note</span></div>
+
+  <h3>Settings page</h3>
+  <div class="change-row"><span class="tag tag-remove">Removed</span><span class="change-desc">Inline <code>{saved && &lt;p className="text-green-600"&gt;Settings saved&lt;/p&gt;}</code> state</span></div>
+  <div class="change-row"><span class="tag tag-improve">Improved</span><span class="change-desc">Section headings: dropped uppercase tracking pattern, now <code>text-base font-semibold</code></span></div>
+
+  <h3>MetadataPanel</h3>
+  <div class="change-row"><span class="tag tag-fix">Fix</span><span class="change-desc">Heading changed from <code>text-sm text-muted-foreground uppercase tracking-wide</code> to plain <code>text-sm font-semibold</code></span></div>
+
+  <h3>Public song share (<code>/s/:token</code>)</h3>
+  <div class="change-row"><span class="tag tag-remove">Removed</span><span class="change-desc"><code>border-b</code> on header — replaced with generous vertical padding</span></div>
+  <div class="change-row"><span class="tag tag-improve">Improved</span><span class="change-desc">Song title now <code>text-3xl font-bold</code>, sections use <code>space-y-10</code> for breathing room</span></div>
+</div>
+
+<!-- SONNER -->
+<div class="section">
+  <h2>Error handling → Sonner</h2>
+  <p>All <code>alert()</code> calls replaced with <code>toast.error()</code> or <code>toast.success()</code> from <strong>sonner v2.0.7</strong>. <code>&lt;Toaster richColors position="top-right" /&gt;</code> added to <code>providers.tsx</code>.</p>
+
+  <h3>Files updated</h3>
+  <div class="files-grid">
+    <div class="file-chip">routes/songs/$id.tsx</div>
+    <div class="file-chip">routes/songs/new.tsx</div>
+    <div class="file-chip">routes/shows/$id.tsx</div>
+    <div class="file-chip">routes/shows/new.tsx</div>
+    <div class="file-chip">routes/projects/$id.tsx</div>
+    <div class="file-chip">routes/projects/new.tsx</div>
+    <div class="file-chip">routes/history.tsx</div>
+    <div class="file-chip">routes/export.tsx</div>
+    <div class="file-chip">routes/settings.tsx</div>
+    <div class="file-chip">components/providers.tsx</div>
+  </div>
+</div>
+
+<!-- FULL FILE LIST -->
+<div class="section">
+  <h2>All modified files</h2>
+  <div class="files-grid">
+    <div class="file-chip">styles/styles.css</div>
+    <div class="file-chip">styles/custom.css</div>
+    <div class="file-chip">routes/__root.tsx</div>
+    <div class="file-chip">components/nav-sidebar.tsx</div>
+    <div class="file-chip">components/providers.tsx</div>
+    <div class="file-chip">routes/auth/$path.tsx</div>
+    <div class="file-chip">routes/index.tsx</div>
+    <div class="file-chip">routes/songs/index.tsx</div>
+    <div class="file-chip">routes/songs/$id.tsx</div>
+    <div class="file-chip">routes/songs/new.tsx</div>
+    <div class="file-chip">routes/shows/index.tsx</div>
+    <div class="file-chip">routes/shows/$id.tsx</div>
+    <div class="file-chip">routes/shows/new.tsx</div>
+    <div class="file-chip">routes/projects/index.tsx</div>
+    <div class="file-chip">routes/projects/$id.tsx</div>
+    <div class="file-chip">routes/projects/new.tsx</div>
+    <div class="file-chip">routes/history.tsx</div>
+    <div class="file-chip">routes/import.tsx</div>
+    <div class="file-chip">routes/export.tsx</div>
+    <div class="file-chip">routes/settings.tsx</div>
+    <div class="file-chip">routes/s/$token.tsx</div>
+    <div class="file-chip">components/song-editor/metadata-panel.tsx</div>
+  </div>
+</div>
+
+<!-- WHAT WASN'T TOUCHED -->
+<div class="section">
+  <h2>Intentionally unchanged</h2>
+  <ul>
+    <li>All API route handlers (<code>routes/api/**</code>) — backend logic, no UI</li>
+    <li>Monaco editor component — functional editor, not a design surface</li>
+    <li>SectionList / SectionItem drag-and-drop logic — complex, working correctly</li>
+    <li>SharePanel / HistorySidebar components — functional, minor enough to defer</li>
+    <li>Database schema and auth configuration</li>
+    <li>AccountView from <code>@daveyplate/better-auth-ui</code> — external component</li>
+  </ul>
+</div>
+
+</body>
+</html>

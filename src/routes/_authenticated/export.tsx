@@ -17,7 +17,7 @@ type ShowItem = {
     type: string
 }
 
-export const Route = createFileRoute("/_authenticated/export" as any)({
+export const Route = createFileRoute("/_authenticated/export" )({
     loader: async () => {
         const [allSongs, allShows] = await Promise.all([
             getSongs(),

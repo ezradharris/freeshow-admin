@@ -9,7 +9,7 @@ import type { SongSection, Settings } from "@/components/song-editor/section-ite
 import { createSong } from "@/server/songs"
 import { getSettings } from "@/server/settings"
 
-export const Route = createFileRoute("/_authenticated/songs/new" as any)({
+export const Route = createFileRoute("/_authenticated/songs/new")({
     loader: async () => {
         const settings = await getSettings()
         return { settings: settings as Settings }

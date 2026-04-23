@@ -20,7 +20,7 @@ type SongData = {
     sections: SongSection[]
 }
 
-export const Route = createFileRoute("/_authenticated/songs/$id" as any)({
+export const Route = createFileRoute("/_authenticated/songs/$id")({
     loader: async ({ params }) => {
         const [song, settings] = await Promise.all([
             getSong({ data: { id: params.id } }),

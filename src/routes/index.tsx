@@ -5,7 +5,7 @@ import { getSessionFn } from "@/server/auth"
 export const Route = createFileRoute("/")({
     beforeLoad: async () => {
         const session = await getSessionFn()
-        if (session) throw redirect({ to: "/_authenticated/dashboard" as any })
+        if (session) throw redirect({ to: "/dashboard" })
     },
     component: LoginPage,
 })

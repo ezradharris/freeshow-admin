@@ -1,6 +1,7 @@
 import { AuthUIProvider } from "@daveyplate/better-auth-ui"
 import { Link, useRouter } from "@tanstack/react-router"
 import { ThemeProvider } from "next-themes"
+import { Toaster } from "sonner"
 
 import { authClient } from "@/lib/auth-client"
 import { MetaTheme } from "./meta-theme"
@@ -25,6 +26,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
                 <MetaTheme />
             </AuthUIProvider>
+
+            <Toaster richColors position="top-right" />
         </ThemeProvider>
     )
 }

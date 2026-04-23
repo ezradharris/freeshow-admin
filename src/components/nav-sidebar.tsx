@@ -14,24 +14,24 @@ import type { LucideIcon } from "lucide-react"
 import { ModeToggle } from "./mode-toggle"
 
 const NAV_ITEMS = [
-    { to: "/_authenticated/dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { to: "/_authenticated/songs/", label: "Songs", icon: Music },
-    { to: "/_authenticated/shows/", label: "Shows", icon: MonitorPlay },
-    { to: "/_authenticated/projects/", label: "Projects", icon: FolderOpen },
-    { to: "/_authenticated/import", label: "Import", icon: Upload },
-    { to: "/_authenticated/export", label: "Export", icon: Download },
-    { to: "/_authenticated/history", label: "History", icon: History },
-    { to: "/_authenticated/settings", label: "Settings", icon: Settings },
+    { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+    { to: "/songs", label: "Songs", icon: Music },
+    { to: "/shows", label: "Shows", icon: MonitorPlay },
+    { to: "/projects", label: "Projects", icon: FolderOpen },
+    { to: "/import", label: "Import", icon: Upload },
+    { to: "/export", label: "Export", icon: Download },
+    { to: "/history", label: "History", icon: History },
+    { to: "/settings", label: "Settings", icon: Settings },
 ] as const
 
 type NavItem = {
-    to: string
+    to: (typeof NAV_ITEMS)[number]['to']
     label: string
     icon: LucideIcon
 }
 
 function isActive(pathname: string, to: string) {
-    if (to === "/_authenticated/dashboard") return pathname === "/_authenticated/dashboard"
+    if (to === "/dashboard") return pathname === "/dashboard"
     return pathname.startsWith(to)
 }
 
@@ -41,7 +41,7 @@ function NavLink({ to, label, icon: Icon }: NavItem) {
 
     return (
         <Link
-            to={to as any}
+            to={to}
             className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
                 active
                     ? "bg-primary/10 text-primary"
@@ -60,7 +60,7 @@ function MobileNavLink({ to, label, icon: Icon }: NavItem) {
 
     return (
         <Link
-            to={to as any}
+            to={to}
             className={`flex flex-1 flex-col items-center gap-1 py-2 transition-colors ${
                 active ? "text-primary" : "text-foreground/60"
             }`}

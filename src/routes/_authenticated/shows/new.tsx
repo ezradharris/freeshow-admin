@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { createShow } from "@/server/shows"
 import { newShowTemplate } from "@/lib/freeshow"
 
-export const Route = createFileRoute("/_authenticated/shows/new" as any)({
+export const Route = createFileRoute("/_authenticated/shows/new")({
     component: NewShowPage,
 })
 

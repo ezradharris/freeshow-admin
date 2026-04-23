@@ -11,7 +11,7 @@ type Settings = {
     line_break_strategy: "word" | "char"
 }
 
-export const Route = createFileRoute("/_authenticated/settings" as any)({
+export const Route = createFileRoute("/_authenticated/settings")({
     loader: async () => {
         const data = await getSettings()
         return { settings: data as Partial<Settings> }

@@ -13,7 +13,7 @@ type ImportResult = {
     reason?: string
 }
 
-export const Route = createFileRoute("/_authenticated/import" as any)({
+export const Route = createFileRoute("/_authenticated/import")({
     component: ImportPage,
 })
 
@@ -59,21 +59,21 @@ function ImportPage() {
         if (r.type === "song") {
             return (
                 <Button variant="ghost" size="sm" asChild>
-                    <Link to={"/_authenticated/songs/$id" as any} params={{ id: r.id } as any}>View</Link>
+                    <Link to="/songs/$id" params={{ id: r.id }}>View</Link>
                 </Button>
             )
         }
         if (r.type === "show") {
             return (
                 <Button variant="ghost" size="sm" asChild>
-                    <Link to={"/_authenticated/shows/$id" as any} params={{ id: r.id } as any}>View</Link>
+                    <Link to="/shows/$id" params={{ id: r.id }}>View</Link>
                 </Button>
             )
         }
         if (r.type === "project") {
             return (
                 <Button variant="ghost" size="sm" asChild>
-                    <Link to={"/_authenticated/projects/$id" as any} params={{ id: r.id } as any}>View</Link>
+                    <Link to="/projects/$id" params={{ id: r.id }}>View</Link>
                 </Button>
             )
         }

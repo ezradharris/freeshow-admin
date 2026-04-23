@@ -35,7 +35,7 @@ function Field({ label, id, value, onChange, placeholder }: FieldProps) {
 export function MetadataPanel({ title, author, copyright, ccliNumber, onChange }: MetadataPanelProps) {
     return (
         <div className="border rounded-lg p-4 bg-card space-y-4">
-            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Song Details</h2>
+            <h2 className="text-sm font-semibold">Song details</h2>
             <Field
                 label="Title"
                 id="song-title"

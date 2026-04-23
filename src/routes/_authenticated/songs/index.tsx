@@ -6,7 +6,7 @@ import { getSongs } from "@/server/songs"
 
 type Song = { id: string; title: string; author: string | null; ccliNumber: string | null; updatedAt: Date }
 
-export const Route = createFileRoute("/_authenticated/songs/" as any)({
+export const Route = createFileRoute("/_authenticated/songs/")({
     loader: async () => {
         const songs = await getSongs()
         return { songs }

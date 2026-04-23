@@ -10,7 +10,7 @@ type Show = {
     updatedAt: Date
 }
 
-export const Route = createFileRoute("/_authenticated/shows/" as any)({
+export const Route = createFileRoute("/_authenticated/shows/")({
     loader: async () => {
         const shows = await getShows({ data: { type: "show" } })
         return { shows }

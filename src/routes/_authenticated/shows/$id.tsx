@@ -14,7 +14,7 @@ type ShowRecord = {
     updatedAt: Date
 }
 
-export const Route = createFileRoute("/_authenticated/shows/$id" as any)({
+export const Route = createFileRoute("/_authenticated/shows/$id")({
     loader: async ({ params }) => {
         const show = await getShow({ data: { id: params.id } })
         return { show: show as ShowRecord }

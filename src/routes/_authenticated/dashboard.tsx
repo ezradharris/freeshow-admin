@@ -33,7 +33,7 @@ type HistoryEntry = {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const Route = createFileRoute("/_authenticated/dashboard" as any)({
+export const Route = createFileRoute("/_authenticated/dashboard")({
     loader: async () => {
         const [allSongs, allShows, history] = await Promise.all([
             getSongs(),

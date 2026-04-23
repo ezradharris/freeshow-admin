@@ -14,23 +14,16 @@
 }
 
 :root {
-    --warning: hsl(38 92% 50%);
-    --warning-foreground: hsl(48 96% 89%);
+    --warning: oklch(0.75 0.17 60);
+    --warning-foreground: oklch(0.25 0.08 60);
 }
 
 .dark {
-    --warning: hsl(48 96% 89%);
-    --warning-foreground: hsl(38 92% 50%);
+    --warning: oklch(0.82 0.15 60);
+    --warning-foreground: oklch(0.20 0.06 60);
 }
 
 @theme inline {
     --color-warning: var(--warning);
     --color-warning-foreground: var(--warning-foreground);
 }
-
-/** iOS Dynamic System Font Scaling */
-/* @supports (-webkit-touch-callout:none) {
-	html {
-		font: -apple-system-body;
-	}
-} */

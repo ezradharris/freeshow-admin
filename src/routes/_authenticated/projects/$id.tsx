@@ -14,7 +14,7 @@ type ProjectRecord = {
     updatedAt: Date
 }
 
-export const Route = createFileRoute("/_authenticated/projects/$id" as any)({
+export const Route = createFileRoute("/_authenticated/projects/$id")({
     loader: async ({ params }) => {
         const project = await getShow({ data: { id: params.id } })
         return { project: project as ProjectRecord }

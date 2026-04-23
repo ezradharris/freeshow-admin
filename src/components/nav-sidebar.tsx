@@ -14,14 +14,14 @@ import type { LucideIcon } from "lucide-react"
 import { ModeToggle } from "./mode-toggle"
 
 const NAV_ITEMS = [
-    { to: "/", label: "Dashboard", icon: LayoutDashboard },
-    { to: "/songs", label: "Songs", icon: Music },
-    { to: "/shows", label: "Shows", icon: MonitorPlay },
-    { to: "/projects", label: "Projects", icon: FolderOpen },
-    { to: "/import", label: "Import", icon: Upload },
-    { to: "/export", label: "Export", icon: Download },
-    { to: "/history", label: "History", icon: History },
-    { to: "/settings", label: "Settings", icon: Settings },
+    { to: "/_authenticated/dashboard", label: "Dashboard", icon: LayoutDashboard },
+    { to: "/_authenticated/songs/", label: "Songs", icon: Music },
+    { to: "/_authenticated/shows/", label: "Shows", icon: MonitorPlay },
+    { to: "/_authenticated/projects/", label: "Projects", icon: FolderOpen },
+    { to: "/_authenticated/import", label: "Import", icon: Upload },
+    { to: "/_authenticated/export", label: "Export", icon: Download },
+    { to: "/_authenticated/history", label: "History", icon: History },
+    { to: "/_authenticated/settings", label: "Settings", icon: Settings },
 ] as const
 
 type NavItem = {
@@ -31,7 +31,7 @@ type NavItem = {
 }
 
 function isActive(pathname: string, to: string) {
-    if (to === "/") return pathname === "/"
+    if (to === "/_authenticated/dashboard") return pathname === "/_authenticated/dashboard"
     return pathname.startsWith(to)
 }
 
@@ -41,16 +41,14 @@ function NavLink({ to, label, icon: Icon }: NavItem) {
 
     return (
         <Link
-            to={to}
-            className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors ${
+            to={to as any}
+            className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
                 active
-                    ? "bg-muted font-medium"
-                    : "hover:bg-muted/50"
+                    ? "bg-primary/10 text-primary"
+                    : "text-foreground/65 hover:bg-muted/60 hover:text-foreground"
             }`}
         >
-            <Icon
-                className={`h-4 w-4 shrink-0 ${active ? "text-primary" : ""}`}
-            />
+            <Icon className={`h-4 w-4 shrink-0 ${active ? "text-primary" : ""}`} />
             {label}
         </Link>
     )
@@ -62,34 +60,29 @@ function MobileNavLink({ to, label, icon: Icon }: NavItem) {
 
     return (
         <Link
-            to={to}
-            className="flex flex-1 flex-col items-center gap-1 py-2"
+            to={to as any}
+            className={`flex flex-1 flex-col items-center gap-1 py-2 transition-colors ${
+                active ? "text-primary" : "text-foreground/60"
+            }`}
         >
-            <Icon
-                className={`h-5 w-5 ${active ? "text-primary" : ""}`}
-            />
-            <span
-                className={`text-xs ${active ? "text-primary" : ""}`}
-            >
-                {label}
-            </span>
+            <Icon className="h-5 w-5" />
+            <span className="text-xs">{label}</span>
         </Link>
     )
 }
 
 export function NavSidebar() {
-    const pathname = useRouterState({ select: (s) => s.location.pathname })
-    if (pathname.startsWith("/s/")) return null
-
     return (
         <>
             {/* Desktop sidebar */}
-            <aside className="hidden md:flex fixed inset-y-0 left-0 w-60 flex-col border-r bg-background z-40">
-                <div className="flex h-14 items-center border-b px-4 font-semibold">
-                    FreeShow Admin
+            <aside className="hidden md:flex fixed inset-y-0 left-0 w-60 flex-col border-r bg-sidebar z-40">
+                <div className="flex h-14 items-center border-b px-4">
+                    <span className="font-display text-lg font-bold tracking-tight">
+                        FreeShow Admin
+                    </span>
                 </div>
 
-                <nav className="flex flex-col gap-1 p-2 flex-1 overflow-y-auto">
+                <nav className="flex flex-col gap-0.5 p-2 flex-1 overflow-y-auto">
                     {NAV_ITEMS.map((item) => (
                         <NavLink key={item.to} {...item} />
                     ))}

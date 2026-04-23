@@ -2,7 +2,7 @@
 import { createServerFn } from "@tanstack/react-start"
 import { db } from "@/database/db"
 import { settings } from "@/database/schema"
-import { withAuth } from "./auth"
+import { withAuth } from "./auth.server"
 import { updateSettingsInputSchema } from "./schemas"
 
 const VALID_KEYS = new Set(["max_line_chars", "warn_line_chars", "auto_line_break", "line_break_strategy"])

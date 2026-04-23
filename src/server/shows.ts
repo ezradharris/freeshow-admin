@@ -4,7 +4,7 @@ import { db } from "@/database/db"
 import { shows, contentHistory } from "@/database/schema"
 import { eq, desc } from "drizzle-orm"
 import { z } from "zod"
-import { withAuth } from "./auth"
+import { withAuth } from "./auth.server"
 import { createShowInputSchema, updateShowInputSchema } from "./schemas"
 
 export const getShows = createServerFn({ method: "GET" })

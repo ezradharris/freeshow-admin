@@ -4,7 +4,7 @@ import { db } from "@/database/db"
 import { songs, songSections, shows, contentHistory } from "@/database/schema"
 import { eq } from "drizzle-orm"
 import { z } from "zod"
-import { withAuth } from "./auth"
+import { withAuth } from "./auth.server"
 import { parseFreeshowFile, detectContentType, parseSong } from "@/lib/freeshow"
 
 const importFileSchema = z.object({

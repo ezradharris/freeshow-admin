@@ -4,7 +4,7 @@ import { db } from "@/database/db"
 import { songs, songSections, shows } from "@/database/schema"
 import { inArray, asc } from "drizzle-orm"
 import { z } from "zod"
-import { withAuth } from "./auth"
+import { withAuth } from "./auth.server"
 import { serializeSong } from "@/lib/freeshow"
 
 type SongRow = typeof songs.$inferSelect

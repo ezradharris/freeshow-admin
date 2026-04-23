@@ -5,7 +5,7 @@ import { songs, shows, songSections, contentHistory } from "@/database/schema"
 import { users } from "@/../auth-schema"
 import { eq, and, desc } from "drizzle-orm"
 import { z } from "zod"
-import { withAuth } from "./auth"
+import { withAuth } from "./auth.server"
 
 export const getHistory = createServerFn({ method: "GET" })
     .inputValidator(z.object({ limit: z.number().int().optional() }))

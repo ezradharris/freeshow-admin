@@ -3,7 +3,7 @@ import { db } from "@/database/db"
 import { songs, songSections, contentHistory } from "@/database/schema"
 import { eq, asc, desc } from "drizzle-orm"
 import { z } from "zod"
-import { withAuth } from "./auth"
+import { withAuth } from "./auth.server"
 import { createSongInputSchema, updateSongInputSchema } from "./schemas"
 
 export const getSongs = createServerFn({ method: "GET" }).handler(async () => {

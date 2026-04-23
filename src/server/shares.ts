@@ -4,7 +4,7 @@ import { db } from "@/database/db"
 import { songs, songSections, songShares } from "@/database/schema"
 import { eq, and, asc } from "drizzle-orm"
 import { z } from "zod"
-import { withAuth } from "./auth"
+import { withAuth } from "./auth.server"
 import { createShareInputSchema } from "./schemas"
 
 export const createShare = createServerFn({ method: "POST" })

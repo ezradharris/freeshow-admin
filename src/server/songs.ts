@@ -2,18 +2,9 @@ import { createServerFn } from "@tanstack/react-start"
 import { db } from "@/database/db"
 import { songs, songSections, contentHistory } from "@/database/schema"
 import { eq, asc, desc } from "drizzle-orm"
+import { z } from "zod"
 import { withAuth } from "./auth"
-
-// Explicit column selection to avoid rawImport: unknown serialization issues
-const songColumns = {
-    id: songs.id,
-    title: songs.title,
-    author: songs.author,
-    copyright: songs.copyright,
-    ccliNumber: songs.ccliNumber,
-    createdAt: songs.createdAt,
-    updatedAt: songs.updatedAt,
-}
+import { createSongInputSchema, updateSongInputSchema } from "./schemas"
 
 export const getSongs = createServerFn({ method: "GET" }).handler(async () => {
     await withAuth()
@@ -31,10 +22,21 @@ export const getSongs = createServerFn({ method: "GET" }).handler(async () => {
 })
 
 export const getSong = createServerFn({ method: "GET" })
-    .inputValidator((input: { id: string }) => input)
+    .inputValidator(z.object({ id: z.string() }))
     .handler(async ({ data }) => {
         await withAuth()
-        const [song] = await db.select(songColumns).from(songs).where(eq(songs.id, data.id))
+        const [song] = await db
+            .select({
+                id: songs.id,
+                title: songs.title,
+                author: songs.author,
+                copyright: songs.copyright,
+                ccliNumber: songs.ccliNumber,
+                createdAt: songs.createdAt,
+                updatedAt: songs.updatedAt,
+            })
+            .from(songs)
+            .where(eq(songs.id, data.id))
         if (!song) throw new Error("Not found")
         const sections = await db
             .select()
@@ -45,19 +47,11 @@ export const getSong = createServerFn({ method: "GET" })
     })
 
 export const createSong = createServerFn({ method: "POST" })
-    .inputValidator(
-        (input: {
-            title: string
-            author?: string | null
-            copyright?: string | null
-            ccliNumber?: string | null
-            sections?: Array<{ type: string; label: string; content: string; sortOrder: number }>
-        }) => input,
-    )
+    .inputValidator(createSongInputSchema)
     .handler(async ({ data }) => {
         const { session } = await withAuth()
         if (!data.title?.trim()) throw new Error("title is required")
-        const [songRaw] = await db
+        const [song] = await db
             .insert(songs)
             .values({
                 title: data.title,
@@ -65,35 +59,34 @@ export const createSong = createServerFn({ method: "POST" })
                 copyright: data.copyright ?? null,
                 ccliNumber: data.ccliNumber ?? null,
             })
-            .returning({ ...songColumns })
+            .returning({
+                id: songs.id,
+                title: songs.title,
+                author: songs.author,
+                copyright: songs.copyright,
+                ccliNumber: songs.ccliNumber,
+                createdAt: songs.createdAt,
+                updatedAt: songs.updatedAt,
+            })
         if (data.sections?.length) {
             await db
                 .insert(songSections)
-                .values(data.sections.map((s) => ({ ...s, songId: songRaw.id })))
+                .values(data.sections.map((s) => ({ ...s, songId: song.id })))
         }
         await db.insert(contentHistory).values({
             contentType: "song",
-            contentId: songRaw.id,
-            snapshot: { ...songRaw, sections: data.sections ?? [] },
+            contentId: song.id,
+            snapshot: { ...song, sections: data.sections ?? [] },
             changedBy: session.user.id,
         })
-        return songRaw
+        return song
     })
 
 export const updateSong = createServerFn({ method: "POST" })
-    .inputValidator(
-        (input: {
-            id: string
-            title?: string
-            author?: string | null
-            copyright?: string | null
-            ccliNumber?: string | null
-            sections?: Array<{ type: string; label: string; content: string; sortOrder: number }>
-        }) => input,
-    )
+    .inputValidator(updateSongInputSchema)
     .handler(async ({ data }) => {
         const { session } = await withAuth()
-        const [existing] = await db.select({ id: songs.id }).from(songs).where(eq(songs.id, data.id))
+        const [existing] = await db.select().from(songs).where(eq(songs.id, data.id))
         if (!existing) throw new Error("Not found")
         if (data.title !== undefined && !data.title?.trim()) throw new Error("title cannot be empty")
 
@@ -107,7 +100,15 @@ export const updateSong = createServerFn({ method: "POST" })
             .update(songs)
             .set(updateData)
             .where(eq(songs.id, data.id))
-            .returning({ ...songColumns })
+            .returning({
+                id: songs.id,
+                title: songs.title,
+                author: songs.author,
+                copyright: songs.copyright,
+                ccliNumber: songs.ccliNumber,
+                createdAt: songs.createdAt,
+                updatedAt: songs.updatedAt,
+            })
 
         let sections: Array<{ type: string; label: string; content: string; sortOrder: number; id: string; songId: string }> = []
         if (data.sections !== undefined) {
@@ -136,7 +137,7 @@ export const updateSong = createServerFn({ method: "POST" })
     })
 
 export const deleteSong = createServerFn({ method: "POST" })
-    .inputValidator((input: { id: string }) => input)
+    .inputValidator(z.object({ id: z.string() }))
     .handler(async ({ data }) => {
         await withAuth()
         const deleted = await db.delete(songs).where(eq(songs.id, data.id)).returning({ id: songs.id })

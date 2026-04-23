@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ImportRouteImport } from './routes/import'
 import { Route as HistoryRouteImport } from './routes/history'
@@ -40,6 +41,11 @@ import { Route as ApiSongsIdHistoryRouteImport } from './routes/api/songs/$id/hi
 import { Route as ApiShowsIdHistoryRouteImport } from './routes/api/shows/$id/history'
 import { Route as ApiPublicSongsTokenRouteImport } from './routes/api/public/songs/$token'
 
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -193,6 +199,7 @@ const ApiPublicSongsTokenRoute = ApiPublicSongsTokenRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRoute
   '/export': typeof ExportRoute
   '/history': typeof HistoryRoute
   '/import': typeof ImportRoute
@@ -257,6 +264,7 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/_authenticated': typeof AuthenticatedRoute
   '/': typeof IndexRoute
   '/export': typeof ExportRoute
   '/history': typeof HistoryRoute
@@ -355,6 +363,7 @@ export interface FileRouteTypes {
     | '/api/songs/$id/share'
   id:
     | '__root__'
+    | '/_authenticated'
     | '/'
     | '/export'
     | '/history'
@@ -388,6 +397,7 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  AuthenticatedRoute: typeof AuthenticatedRoute
   IndexRoute: typeof IndexRoute
   ExportRoute: typeof ExportRoute
   HistoryRoute: typeof HistoryRoute
@@ -419,6 +429,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/settings': {
       id: '/settings'
       path: '/settings'
@@ -659,6 +676,7 @@ const ApiSongsIdRouteWithChildren = ApiSongsIdRoute._addFileChildren(
 )
 
 const rootRouteChildren: RootRouteChildren = {
+  AuthenticatedRoute: AuthenticatedRoute,
   IndexRoute: IndexRoute,
   ExportRoute: ExportRoute,
   HistoryRoute: HistoryRoute,

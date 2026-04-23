@@ -1,7 +1,6 @@
 import { TanStackDevtools } from "@tanstack/react-devtools"
-import { createRootRoute, HeadContent, Scripts, useRouterState } from "@tanstack/react-router"
+import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router"
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools"
-import { NavSidebar } from "@/components/nav-sidebar"
 import { Providers } from "@/components/providers"
 import appCss from "../styles/styles.css?url"
 
@@ -20,9 +19,12 @@ export const Route = createRootRoute({
             }
         ],
         links: [
+            { rel: "stylesheet", href: appCss },
+            { rel: "preconnect", href: "https://fonts.googleapis.com" },
+            { rel: "preconnect", href: "https://fonts.gstatic.com" },
             {
                 rel: "stylesheet",
-                href: appCss
+                href: "https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
             }
         ]
     }),
@@ -31,9 +33,6 @@ export const Route = createRootRoute({
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-    const { location } = useRouterState()
-    const isPublicShare = location.pathname.startsWith("/s/")
-
     return (
         <html lang="en" suppressHydrationWarning>
             <head>
@@ -42,11 +41,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 
             <body className="min-h-screen bg-background">
                 <Providers>
-                    <NavSidebar />
-                    {/* Main content offset for sidebar on desktop, padding-bottom for mobile nav */}
-                    <main className={isPublicShare ? "min-h-screen" : "md:pl-60 min-h-screen pb-16 md:pb-0"}>
-                        {children}
-                    </main>
+                    {children}
                 </Providers>
 
                 <TanStackDevtools

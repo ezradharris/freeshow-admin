@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
+import { getSongHistory, restoreSongHistory } from "@/server/history"
 
 interface HistoryEntry {
     id: string
-    changedAt: string
+    changedAt: Date | string
     changedByName: string | null
 }
 
@@ -21,11 +22,11 @@ export function HistorySidebar({ songId, onRestore }: HistorySidebarProps) {
     useEffect(() => {
         let cancelled = false
         setLoading(true)
-        fetch(`/api/songs/${songId}/history`)
-            .then(r => r.json())
-            .then((data: unknown) => {
+        setError(null)
+        getSongHistory({ data: { songId } })
+            .then((data) => {
                 if (!cancelled) {
-                    setEntries(Array.isArray(data) ? (data as HistoryEntry[]) : [])
+                    setEntries(data)
                     setLoading(false)
                 }
             })
@@ -41,12 +42,10 @@ export function HistorySidebar({ songId, onRestore }: HistorySidebarProps) {
     async function handleRestore(historyId: string) {
         setRestoringId(historyId)
         try {
-            await fetch(`/api/songs/${songId}/history`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ historyId }),
-            })
+            await restoreSongHistory({ data: { songId, historyId } })
             onRestore()
+        } catch {
+            setError("Restore failed")
         } finally {
             setRestoringId(null)
         }
@@ -54,7 +53,7 @@ export function HistorySidebar({ songId, onRestore }: HistorySidebarProps) {
 
     return (
         <div className="border rounded-lg p-4 bg-card space-y-3">
-            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Change History</h3>
+            <h3 className="text-sm font-semibold">Change history</h3>
 
             {loading && <p className="text-sm text-muted-foreground">Loading…</p>}
             {error && <p className="text-sm text-destructive">{error}</p>}

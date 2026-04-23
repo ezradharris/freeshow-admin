@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
+import { getShowHistory, restoreShowHistory } from "@/server/history"
 
 interface HistoryEntry {
     id: string
-    changedAt: string
+    changedAt: Date | string
     changedByName: string | null
 }
 
@@ -21,11 +22,11 @@ export function ShowHistorySidebar({ showId, onRestore }: ShowHistorySidebarProp
     useEffect(() => {
         let cancelled = false
         setLoading(true)
-        fetch(`/api/shows/${showId}/history`)
-            .then(r => r.json())
-            .then((data: unknown) => {
+        setError(null)
+        getShowHistory({ data: { showId } })
+            .then((data) => {
                 if (!cancelled) {
-                    setEntries(Array.isArray(data) ? (data as HistoryEntry[]) : [])
+                    setEntries(data)
                     setLoading(false)
                 }
             })
@@ -41,19 +42,10 @@ export function ShowHistorySidebar({ showId, onRestore }: ShowHistorySidebarProp
     async function handleRestore(historyId: string) {
         setRestoringId(historyId)
         try {
-            const res = await fetch(`/api/shows/${showId}/history`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ historyId }),
-            })
-            if (!res.ok) {
-                const err = await res.json().catch(() => ({ error: "Restore failed" })) as { error?: string }
-                setError(err.error ?? "Restore failed")
-                return
-            }
+            await restoreShowHistory({ data: { showId, historyId } })
             onRestore()
         } catch {
-            setError("Restore failed — network error")
+            setError("Restore failed")
         } finally {
             setRestoringId(null)
         }
@@ -61,9 +53,7 @@ export function ShowHistorySidebar({ showId, onRestore }: ShowHistorySidebarProp
 
     return (
         <div className="border rounded-lg p-4 bg-card space-y-3">
-            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
-                Change History
-            </h3>
+            <h3 className="text-sm font-semibold">Change history</h3>
 
             {loading && <p className="text-sm text-muted-foreground">Loading...</p>}
             {error && <p className="text-sm text-destructive">{error}</p>}

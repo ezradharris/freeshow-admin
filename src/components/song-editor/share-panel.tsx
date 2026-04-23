@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
+import { createShare } from "@/server/shares"
 
 interface SharePanelProps {
     songId: string
@@ -11,16 +12,11 @@ export function SharePanel({ songId }: SharePanelProps) {
     const [copied, setCopied] = useState(false)
     const [error, setError] = useState<string | null>(null)
 
-    async function createShare() {
+    async function handleCreateShare() {
         setCreating(true)
         setError(null)
         try {
-            const res = await fetch(`/api/songs/${songId}/share`, {
-                method: "POST",
-                body: JSON.stringify({}),
-                headers: { "Content-Type": "application/json" },
-            })
-            const data = await res.json() as { token: string; shareUrl: string }
+            const data = await createShare({ data: { songId } })
             setShareUrl(window.location.origin + data.shareUrl)
         } catch {
             setError("Failed to create share link")
@@ -38,7 +34,7 @@ export function SharePanel({ songId }: SharePanelProps) {
 
     return (
         <div className="border rounded-lg p-4 bg-card space-y-3">
-            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Share Song</h3>
+            <h3 className="text-sm font-semibold">Share song</h3>
 
             {error && <p className="text-sm text-destructive">{error}</p>}
 
@@ -55,12 +51,12 @@ export function SharePanel({ songId }: SharePanelProps) {
                             {copied ? "Copied!" : "Copy"}
                         </Button>
                     </div>
-                    <Button size="sm" variant="ghost" onClick={createShare} disabled={creating}>
+                    <Button size="sm" variant="ghost" onClick={handleCreateShare} disabled={creating}>
                         Generate new link
                     </Button>
                 </div>
             ) : (
-                <Button size="sm" onClick={createShare} disabled={creating}>
+                <Button size="sm" onClick={handleCreateShare} disabled={creating}>
                     {creating ? "Creating…" : "Create Share Link"}
                 </Button>
             )}

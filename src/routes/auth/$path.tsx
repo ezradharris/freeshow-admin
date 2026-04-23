@@ -9,13 +9,15 @@ function RouteComponent() {
     const { path } = Route.useParams()
 
     return (
-        <div className="w-full max-w-sm px-4">
-            <div className="mb-8 text-center">
-                <p className="font-display text-xl font-bold tracking-tight text-primary">
-                    FreeShow Admin
-                </p>
+        <div className="flex min-h-screen items-center justify-center p-6">
+            <div className="w-full max-w-sm">
+                <div className="mb-8 text-center">
+                    <p className="font-display text-xl font-bold tracking-tight text-primary">
+                        FreeShow Admin
+                    </p>
+                </div>
+                <AuthView path={path} />
             </div>
-            <AuthView path={path} />
         </div>
     )
 }

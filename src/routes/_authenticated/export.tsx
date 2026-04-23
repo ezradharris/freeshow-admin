@@ -70,7 +70,7 @@ function ExportPage() {
                 const blob = await zip.generateAsync({ type: "blob" })
                 const url = URL.createObjectURL(blob)
                 const a = document.createElement("a")
-                a.href = url; a.download = "freeshow-export.zip"; a.click()
+                a.href = url; a.download = "chronicles-export.zip"; a.click()
                 URL.revokeObjectURL(url)
             }
         } catch {

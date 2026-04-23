@@ -78,7 +78,7 @@ export function NavSidebar() {
             <aside className="hidden md:flex fixed inset-y-0 left-0 w-60 flex-col border-r bg-sidebar z-40">
                 <div className="flex h-14 items-center border-b px-4">
                     <span className="font-display text-lg font-bold tracking-tight">
-                        FreeShow Admin
+                        Chronicles
                     </span>
                 </div>
 

@@ -16,7 +16,7 @@ function LoginPage() {
             <div className="w-full max-w-sm">
                 <div className="mb-8 text-center">
                     <p className="font-display text-xl font-bold tracking-tight text-primary">
-                        FreeShow Admin
+                        Chronicles
                     </p>
                 </div>
                 <AuthView path="sign-in" />

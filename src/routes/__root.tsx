@@ -7,7 +7,7 @@ import appCss from "../styles/styles.css?url"
 export const Route = createRootRoute({
     head: () => ({
         meta: [
-            { title: "FreeShow Admin" },
+            { title: "Chronicles" },
             { charSet: "utf-8" },
             {
                 name: "viewport",
